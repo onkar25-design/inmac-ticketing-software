@@ -1,0 +1,70 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #c82c2c; 
+  padding: 10px;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.ticket-icon {
+  color: white;
+  font-size: 22px; 
+  margin-right: 8px;
+  margin-left: 5px;
+}
+
+.navbar-logo h2 {
+  color: white;
+  font-size: 20px; 
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar-links,
+.navbar-profile {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-links button,
+.navbar-profile button {
+  color: white;
+  background-color: #c82c2c; 
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 16px; 
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  color: black;
+  padding: 12px 16px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-size: 16px; 
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
