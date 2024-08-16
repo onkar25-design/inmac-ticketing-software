@@ -3,7 +3,14 @@
   justify-content: space-between;
   align-items: center;
   background-color: #c82c2c; 
-  padding: 10px;
+  padding: 10px 10px;
+  width: 100%;
+  position: fixed; 
+  left: 0;
+  top: 0;
+  z-index: 1000; 
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 0;
 }
 
 .navbar-logo {
