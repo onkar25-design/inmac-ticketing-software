@@ -4,8 +4,8 @@ export const ticketPriorityData = {
     datasets: [{
       label: 'Ticket Priority',
       data: [12, 19, 7], 
-      backgroundColor: ['#B7E5B4', '#FFA447', '#F28585'],
-      borderColor: ['#B7E5B4', '#FFA447', '#F28585'],
+      backgroundColor: ['#BDE8CA', '#41B3A2', '#0D7C66'],
+      borderColor: ['#BDE8CA', '#41B3A2', '#0D7C66'],
       borderWidth: 1,
     }],
   };
@@ -14,8 +14,8 @@ export const ticketPriorityData = {
     labels: ['Low', 'Medium', 'High'],
     datasets: [{
       data: [12, 19, 7], 
-      backgroundColor: ['#B7E5B4', '#FFA447', '#F28585'],
-      borderColor: ['#B7E5B4 ', '#FFA447 ', '#F28585 '],
+      backgroundColor: ['#BDE8CA', '#41B3A2', '#0D7C66'],
+      borderColor: ['#BDE8CA', '#41B3A2', '#0D7C66'],
       borderWidth: 1,
     }],
   };
@@ -25,8 +25,8 @@ export const ticketPriorityData = {
     datasets: [{
       label: 'Ticket Status',
       data: [25, 15], 
-      backgroundColor: ['#B7E5B4','#F28585'],
-      borderColor: ['#B7E5B4','#F28585'],
+      backgroundColor: ['#BDE8CA','#0D7C66'],
+      borderColor: ['#BDE8CA','#0D7C66'],
       borderWidth: 1,
     }],
   };
@@ -35,8 +35,8 @@ export const ticketPriorityData = {
     labels: ['Completed', 'Not Completed'],
     datasets: [{
       data: [25, 15], 
-      backgroundColor: ['#B7E5B4','#F28585'],
-      borderColor: ['#B7E5B4','#F28585'],
+      backgroundColor: ['#BDE8CA','#0D7C66'],
+      borderColor: ['#BDE8CA','#0D7C66'],
       borderWidth: 1,
     }],
   };

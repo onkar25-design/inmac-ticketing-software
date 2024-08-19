@@ -1,0 +1,25 @@
+.ticket-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .ticket-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px; 
+  }
+  
+  .ticket-form .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  .headings{
+    color: #41B3A2;
+    font-family:'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+  }

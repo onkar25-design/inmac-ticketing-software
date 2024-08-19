@@ -1,20 +1,34 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './components/dashboard/Navbar';
 import Dashboard from './components/dashboard/Dashboard';
 import Chart from './components/dashboard/Chart'; 
+import TicketForm from './components/forms/TicketForm';
+import EngineerForm from './components/forms/EngineerForm';
+import LocationForm from './components/forms/LocationForm';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <Router>
       <Navbar />
       <div className="main-container">
-        <Dashboard />
-        <Chart /> 
+        <Routes>
+          <Route path="/" element={
+              <>
+                <Dashboard />
+                <Chart />
+              </>
+            } 
+          />
+            <Route path="/ticket-form" element={<TicketForm />} /> 
+            <Route path="/engineer-form" element={<EngineerForm />} /> 
+            <Route path="/location-form" element={<LocationForm />} /> 
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
 export default App;
-

@@ -1,0 +1,47 @@
+.engineer-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.engineer-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.toggle-switch .slider {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 15px;
+  height: 15px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.toggle-switch .slider.active {
+  transform: translateX(20px);
+  background-color: #28a745;
+}
+
+.toggle-switch.active {
+  background-color: #28a745;
+}
+
+.headings{
+  color: #41B3A2;
+  font-family:'Arial Narrow Bold', sans-serif;
+  font-weight: bold;
+}
