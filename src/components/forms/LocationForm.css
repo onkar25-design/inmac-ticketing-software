@@ -1,25 +1,61 @@
-.ticket-form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.location-form-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; 
+  padding: 20px;
+  gap: 40px;
+}
+
+.location-form, .update-location-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  max-width: 100%; 
+  width: 600px;
   
-  .ticket-form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 600px; 
-  }
-  
-  .ticket-form .form-group {
-    margin-bottom: 1rem;
-  }
-  
-  .text-center {
-    text-align: center;
-  }
-  .headings{
-    color: #41B3A2;
-    font-family:'Arial Narrow Bold', sans-serif;
-    font-weight: bold;
-  }
+}
+
+.location-form {
+  margin-right: 600px; 
+}
+
+.headings {
+  color: #41B3A2;
+  font-family: 'Arial Narrow Bold', sans-serif;
+  font-weight: bold;
+  margin-bottom: 15px; 
+}
+
+.update-location-container .btn,
+.location-form .btn {
+  margin-top: 15px;
+  padding: 10px 20px; 
+}
+
+.update-location-container select,
+.location-form input,
+.location-form textarea {
+  padding: 10px; 
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem; 
+}
+
+.location-form input[type="text"],
+.location-form input[type="email"],
+.location-form input[type="number"],
+.location-form textarea {
+  width: 100%;
+}
+
+.location-form textarea {
+  resize: vertical; 
+  min-height: 100px; 
+}
+
+
