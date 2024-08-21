@@ -7,7 +7,7 @@ import Chart from './components/dashboard/Chart';
 import TicketForm from './components/forms/TicketForm';
 import EngineerForm from './components/forms/EngineerForm';
 import LocationForm from './components/forms/LocationForm';
-import './App.css';
+import ContactPage from './components/forms/ContactPage'; 
 
 function App() {
   return (
@@ -15,16 +15,19 @@ function App() {
       <Navbar />
       <div className="main-container">
         <Routes>
-          <Route path="/" element={
+          <Route 
+            path="/" 
+            element={
               <>
                 <Dashboard />
                 <Chart />
               </>
             } 
           />
-            <Route path="/ticket-form" element={<TicketForm />} /> 
-            <Route path="/engineer-form" element={<EngineerForm />} /> 
-            <Route path="/location-form" element={<LocationForm />} /> 
+          <Route path="/ticket-form" element={<TicketForm />} /> 
+          <Route path="/engineer-form" element={<EngineerForm />} /> 
+          <Route path="/location-form" element={<LocationForm />} />
+          <Route path="/contacts" element={<ContactPage />} /> 
         </Routes>
       </div>
     </Router>

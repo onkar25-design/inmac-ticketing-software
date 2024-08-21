@@ -16,16 +16,22 @@ const Navbar = () => {
         <div className="dropdown">
           <button className="dropbtn">Tickets</button>
           <div className="dropdown-content">
-          <button>View Tickets</button>
+            <button>View Tickets</button>
           </div>
         </div>
         <div className="dropdown">
           <button className="dropbtn">Forms</button>
           <div className="dropdown-content">
-          <Link to="/ticket-form" className="dropdown-item">Ticket Form</Link>
-          <Link to="/engineer-form" className="dropdown-item">Engineer Form</Link>
-          <Link to="/location-form" className="dropdown-item">Location Form</Link>
+            <Link to="/ticket-form" className="dropdown-item">Ticket Form</Link>
+            <Link to="/engineer-form" className="dropdown-item">Engineer Form</Link>
+            <Link to="/location-form" className="dropdown-item">Location Form</Link>
           </div>
+        </div>
+        <div className="dropdown">
+          <Link to="/contacts">
+             <button className="dropbtn">Contacts</button>
+           </Link>
+          
         </div>
         <button>Help</button>
       </div>

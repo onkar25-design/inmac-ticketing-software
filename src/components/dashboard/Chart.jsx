@@ -17,8 +17,8 @@ const Chart = () => {
   const [location, setLocation] = useState('');
 
   return (
-    <div className="chart-container">
-      <div className="chart-display">
+    <div className="chart-container-dashboard">
+      <div className="chart-display-dashboard">
         <div>
           <BarChart data={ticketPriorityData} />
         </div>
@@ -32,7 +32,7 @@ const Chart = () => {
           <DoughnutChart data={completionDoughnutData} />
         </div>
       </div>
-      <div className="chart-filters">
+      <div className="chart-filters-dashboard">
         <FilterForm
           startDate={startDate}
           setStartDate={setStartDate}
