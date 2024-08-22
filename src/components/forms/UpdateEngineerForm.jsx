@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
 import { Form, Button, Alert } from 'react-bootstrap';
-import './EngineerForm.css';
+import './UpdateEngineerForm.css';
+import companyLogo from './company-logo.png'; 
 
-const UpdateEngineer = () => {
+const UpdateEngineerForm = () => {
   const [engineers, setEngineers] = useState([]);
   const [selectedEngineer, setSelectedEngineer] = useState(null);
   const [updateData, setUpdateData] = useState({
@@ -12,20 +13,22 @@ const UpdateEngineer = () => {
     email: '',
     location: '',
     domain: '',
-    is_field_engineer: false
+    is_field_engineer: false,
   });
-  
   const [alert, setAlert] = useState({ show: false, message: '', variant: '' });
 
   useEffect(() => {
     const fetchEngineers = async () => {
-      let { data: engineers, error } = await supabase
+      const { data: engineers, error } = await supabase
         .from('engineers')
         .select('id, name');
       if (error) {
         console.error('Error fetching engineers:', error);
       } else {
         setEngineers(engineers);
+        if (engineers.length === 1) {
+          handleSelectEngineer({ target: { value: engineers[0].id } });
+        }
       }
     };
 
@@ -51,19 +54,24 @@ const UpdateEngineer = () => {
   const handleUpdateChange = (e) => {
     setUpdateData({
       ...updateData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleToggleFieldEngineer = () => {
-    setUpdateData({
-      ...updateData,
-      is_field_engineer: !updateData.is_field_engineer
-    });
+    setUpdateData((prevData) => ({
+      ...prevData,
+      is_field_engineer: !prevData.is_field_engineer,
+    }));
   };
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
+    if (!updateData.name || !updateData.email || !updateData.phone_number || !updateData.location) {
+      setAlert({ show: true, message: 'Please fill out all required fields', variant: 'danger' });
+      return;
+    }
+
     const { data, error } = await supabase
       .from('engineers')
       .update(updateData)
@@ -80,7 +88,7 @@ const UpdateEngineer = () => {
         email: '',
         location: '',
         domain: '',
-        is_field_engineer: false
+        is_field_engineer: false,
       });
     }
   };
@@ -102,21 +110,22 @@ const UpdateEngineer = () => {
         email: '',
         location: '',
         domain: '',
-        is_field_engineer: false
+        is_field_engineer: false,
       });
     }
   };
 
   return (
     <div className="update-engineer-container">
+      <img src={companyLogo} alt="Company Logo" className="company-logo-UpdateEngineerForm" />
       <h2 className="text-center mb-4">Update Engineer</h2>
       {alert.show && <Alert variant={alert.variant}>{alert.message}</Alert>}
       <Form onSubmit={handleUpdateSubmit}>
         <Form.Group className="mb-3">
           <Form.Label className="headings">Select Engineer</Form.Label>
-          <Form.Select onChange={handleSelectEngineer}>
-            <option>Select an engineer...</option>
-            {engineers.map(engineer => (
+          <Form.Select onChange={handleSelectEngineer} value={selectedEngineer || ''}>
+            <option value="" disabled>Select an engineer...</option>
+            {engineers.map((engineer) => (
               <option key={engineer.id} value={engineer.id}>
                 {engineer.name}
               </option>
@@ -128,49 +137,53 @@ const UpdateEngineer = () => {
           <>
             <Form.Group className="mb-3">
               <Form.Label className="headings">Name*</Form.Label>
-              <Form.Control 
-                type="text" 
-                placeholder="Name" 
-                name="name" 
-                value={updateData.name} 
-                onChange={handleUpdateChange} 
+              <Form.Control
+                type="text"
+                placeholder="Name"
+                name="name"
+                value={updateData.name}
+                onChange={handleUpdateChange}
+                required
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label className="headings">Phone Number*</Form.Label>
-              <Form.Control 
-                type="number" 
-                name="phone_number" 
-                value={updateData.phone_number} 
-                onChange={handleUpdateChange} 
+              <Form.Control
+                type="number"
+                name="phone_number"
+                value={updateData.phone_number}
+                onChange={handleUpdateChange}
+                required
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label className="headings">Email ID*</Form.Label>
-              <Form.Control 
-                type="text" 
-                name="email" 
-                value={updateData.email} 
-                onChange={handleUpdateChange} 
+              <Form.Control
+                type="email"
+                name="email"
+                value={updateData.email}
+                onChange={handleUpdateChange}
+                required
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label className="headings">Location*</Form.Label>
-              <Form.Control 
-                type="text" 
-                name="location" 
-                value={updateData.location} 
-                onChange={handleUpdateChange} 
+              <Form.Control
+                type="text"
+                name="location"
+                value={updateData.location}
+                onChange={handleUpdateChange}
+                required
               />
             </Form.Group>
 
             <Form.Group className="mb-3 d-flex align-items-center">
               <Form.Label className="headings me-3">Field Engineer</Form.Label>
-              <div 
-                className={`toggle-switch ${updateData.is_field_engineer ? 'active' : ''}`} 
+              <div
+                className={`toggle-switch ${updateData.is_field_engineer ? 'active' : ''}`}
                 onClick={handleToggleFieldEngineer}
               >
                 <div className={`slider ${updateData.is_field_engineer ? 'active' : ''}`}></div>
@@ -179,15 +192,16 @@ const UpdateEngineer = () => {
 
             <Form.Group className="mb-3">
               <Form.Label className="headings">Domain</Form.Label>
-              <Form.Select 
-                name="domain" 
-                value={updateData.domain} 
+              <Form.Select
+                name="domain"
+                value={updateData.domain}
                 onChange={handleUpdateChange}
               >
-                <option>Hardware Engineer</option>
-                <option>PM Engineer</option>
-                <option>Printer Engineer</option>
-                <option>Other</option>
+                <option value="">Select a domain...</option>
+                <option value="Hardware Engineer">Hardware Engineer</option>
+                <option value="PM Engineer">PM Engineer</option>
+                <option value="Printer Engineer">Printer Engineer</option>
+                <option value="Other">Other</option>
               </Form.Select>
             </Form.Group>
 
@@ -195,9 +209,9 @@ const UpdateEngineer = () => {
               <Button variant="danger" type="submit">
                 Save Changes
               </Button>
-              <Button 
-                variant="outline-danger" 
-                onClick={handleDeleteEngineer} 
+              <Button
+                variant="outline-danger"
+                onClick={handleDeleteEngineer}
                 className="ms-3"
               >
                 Remove Engineer
@@ -210,4 +224,4 @@ const UpdateEngineer = () => {
   );
 };
 
-export default UpdateEngineer;
+export default UpdateEngineerForm;

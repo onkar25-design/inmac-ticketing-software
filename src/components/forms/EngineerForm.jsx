@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
+import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import './EngineerForm.css'; 
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import UpdateEngineerForm from './UpdateEngineerForm';
+import companyLogo from './company-logo.png'; 
 
 const EngineerForm = () => {
   const [isFieldEngineer, setIsFieldEngineer] = useState(false);
@@ -13,6 +13,7 @@ const EngineerForm = () => {
     location: '',
     domain: ''
   });
+  const [alert, setAlert] = useState({ show: false, message: '', variant: '' });
 
   const toggleFieldEngineer = () => {
     setIsFieldEngineer(!isFieldEngineer);
@@ -28,6 +29,11 @@ const EngineerForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!formData.name || !formData.phone_number || !formData.email || !formData.location) {
+      setAlert({ show: true, message: 'Please fill out all required fields', variant: 'danger' });
+      return;
+    }
+
     const { data, error } = await supabase
       .from('engineers')
       .insert([
@@ -42,9 +48,9 @@ const EngineerForm = () => {
       ]);
 
     if (error) {
-      console.error('Error inserting data:', error);
+      setAlert({ show: true, message: 'Error inserting data', variant: 'danger' });
     } else {
-      console.log('Data inserted successfully:', data);
+      setAlert({ show: true, message: 'Engineer added successfully', variant: 'success' });
       setFormData({
         name: '',
         phone_number: '',
@@ -59,9 +65,11 @@ const EngineerForm = () => {
   return (
     <Container className="engineer-form-container mt-5">
       <Row>
-        <Col md={6} className="d-flex flex-column">
+        <Col md={12}>
           <Form className="engineer-form" onSubmit={handleSubmit}>
-          <h2 className="text-center mb-4">Add Engineer to Database</h2>
+            <img src={companyLogo} alt="Company Logo" className="company-logo-EngineerForm" />
+            <h2 className="text-center mb-4">Add New Engineer</h2>
+            {alert.show && <Alert variant={alert.variant}>{alert.message}</Alert>}
             <Form.Group className="mb-3">
               <Form.Label className="headings">Name*</Form.Label>
               <Form.Control 
@@ -70,6 +78,7 @@ const EngineerForm = () => {
                 name="name" 
                 value={formData.name} 
                 onChange={handleChange} 
+                required
               />
             </Form.Group>
 
@@ -80,6 +89,7 @@ const EngineerForm = () => {
                 name="phone_number" 
                 value={formData.phone_number} 
                 onChange={handleChange} 
+                required
               />
             </Form.Group>
 
@@ -90,6 +100,7 @@ const EngineerForm = () => {
                 name="email" 
                 value={formData.email} 
                 onChange={handleChange} 
+                required
               />
             </Form.Group>
 
@@ -107,6 +118,7 @@ const EngineerForm = () => {
                 name="location" 
                 value={formData.location} 
                 onChange={handleChange} 
+                required
               />
             </Form.Group>
 
@@ -117,7 +129,7 @@ const EngineerForm = () => {
                 value={formData.domain} 
                 onChange={handleChange}
               >
-                 <option>Select Domain</option>
+                <option>Select Domain</option>
                 <option>Hardware Engineer</option>
                 <option>PM Engineer</option>
                 <option>Printer Engineer</option>
@@ -131,9 +143,6 @@ const EngineerForm = () => {
               </Button>
             </div>
           </Form>
-        </Col>
-        <Col md={6}>
-          <UpdateEngineerForm />
         </Col>
       </Row>
     </Container>

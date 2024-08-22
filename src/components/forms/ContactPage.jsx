@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+import EngineerModal from './AddEngineerModal'; 
+import EngineerForm from './EngineerForm'; 
+import UpdateEngineerForm from './UpdateEngineerForm'; 
 import './ContactPage.css';
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
 const ContactPage = () => {
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false); 
+
+  const handleOpenAddModal = () => setShowAddModal(true);
+  const handleCloseAddModal = () => setShowAddModal(false);
+
+  const handleOpenUpdateModal = () => setShowUpdateModal(true); 
+  const handleCloseUpdateModal = () => setShowUpdateModal(false); 
+
   const contactInfo = {
     name: 'John QT',
     email: 'john.qt@gmail.com',
@@ -69,7 +81,7 @@ const ContactPage = () => {
               <h2>{contactInfo.name}</h2>
               <p>Data Analyst</p>
             </div>
-            <button className="edit-engineer-btn">Edit</button>
+            <button className="edit-engineer-btn" onClick={handleOpenUpdateModal}>Edit</button> 
           </div>
         </div>
 
@@ -77,7 +89,7 @@ const ContactPage = () => {
           <h3>Timeline</h3>
           <div className="timeline-content">
             <ul className="timeline">
-              <li className="timeline-day">
+            <li className="timeline-day">
                 <span className="timeline-date">Mon, 13 Aug 2024</span>
                 <div className="timeline-entry completed">
                   <span className="timeline-time">9:00 am</span>
@@ -129,7 +141,6 @@ const ContactPage = () => {
                   <p>Completed client review</p>
                 </div>
               </li>
-              
             </ul>
           </div>
         </div>
@@ -145,12 +156,22 @@ const ContactPage = () => {
           <p><strong>Email:</strong> {contactInfo.email}</p>
           <p><strong>Phone:</strong> {contactInfo.phone}</p>
           <p><strong>Field Engineer:</strong> {contactInfo.isFieldEngineer ? 'Yes' : 'No'}</p>
-          <button className="new-engineer-btn">Add Engineer</button>
+          <button className="new-engineer-btn" onClick={handleOpenAddModal}>Add Engineer</button> 
         </div>
         <div className="pie-chart-box">
           <Pie data={pieChartData} options={pieChartOptions} />
         </div>
       </div>
+
+     
+      <EngineerModal show={showAddModal} onClose={handleCloseAddModal}>
+        <EngineerForm />
+      </EngineerModal>
+
+      {/* Modal for updating an engineer */}
+      <EngineerModal show={showUpdateModal} onClose={handleCloseUpdateModal}>
+        <UpdateEngineerForm />
+      </EngineerModal>
     </div>
   );
 };
