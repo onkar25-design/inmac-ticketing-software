@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import './LocationForm.css';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { supabase } from '../../supabaseClient';
-import UpdateLocationForm from './UpdateLocationForm';
+import { Bar } from 'react-chartjs-2';
+import companyLogo from './company-logo.png';
+import mapImage from './map.png';
 
-const LocationForm = () => {
+const AddLocationForm = () => {
   const [formData, setFormData] = useState({
     branchName: '',
     address: '',
@@ -14,11 +16,30 @@ const LocationForm = () => {
     emailId: ''
   });
 
+ 
+  const chartData = {
+    labels: ['City A', 'City B', 'City C', 'City D', 'City E'],
+    datasets: [
+      {
+        label: 'Number of Companies',
+        data: [10, 20, 30, 40, 50],
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: 'rgba(75,192,192,1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -36,32 +57,41 @@ const LocationForm = () => {
           pincode,
           contact_person_name: contactPersonName,
           contact_number: contactNumber,
-          email_id: emailId
-        }
+          email_id: emailId,
+        },
       ]);
 
     if (error) {
       console.error('Error inserting data:', error);
     } else {
       console.log('Data inserted successfully:', data);
-      
+
       setFormData({
         branchName: '',
         address: '',
         pincode: '',
         contactPersonName: '',
         contactNumber: '',
-        emailId: ''
+        emailId: '',
       });
     }
   };
 
   return (
-    <Container className="location-form-container mt-5">
+    <Container fluid className="location-form-container mt-5">
       <Row>
-        <Col md={6} className="d-flex flex-column">
+        <Col xs={12} md={6}>
+          <div className="left-side-container">
+            <img src={mapImage} alt="Map" className="map-image" />
+            <div className="chart-container">
+              <Bar data={chartData} options={chartOptions} />
+            </div>
+          </div>
+        </Col>
+        <Col xs={12} md={6} className="d-flex align-items-center">
           <Form className="location-form" onSubmit={handleSubmit}>
-            <h2 className="text-center mb-4">Add Location to Database</h2>
+            <img src={companyLogo} alt="Company Logo" className="company-logo-LocationForm" />
+            <h2 className="text-center mb-4">Add Location</h2>
             <Form.Group className="mb-3">
               <Form.Label className="headings">Company - Branch*</Form.Label>
               <Form.Control
@@ -142,12 +172,9 @@ const LocationForm = () => {
             </div>
           </Form>
         </Col>
-        <Col md={6}>
-          <UpdateLocationForm />
-        </Col>
       </Row>
     </Container>
   );
 };
 
-export default LocationForm;
+export default AddLocationForm;

@@ -1,61 +1,89 @@
 .location-form-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start; 
-  padding: 20px;
-  gap: 40px;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 150px; 
+  padding-top: 10px;
+  gap: 20px; 
 }
 
-.location-form, .update-location-container {
-  flex: 1;
+.left-side-container {
   display: flex;
   flex-direction: column;
-  padding: 25px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px; 
+  height: auto; 
+}
+
+.map-image-container,
+.chart-container {
+  width: 100%;
+  height: 40vh; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); 
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 8px; 
+}
+
+.map-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.location-form {
+  display: flex;
+  flex-direction: column;
+  padding: 15px; 
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
   max-width: 100%; 
-  width: 600px;
-  
-}
-
-.location-form {
-  margin-right: 600px; 
+  width: 100%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .headings {
   color: #41B3A2;
   font-family: 'Arial Narrow Bold', sans-serif;
   font-weight: bold;
-  margin-bottom: 15px; 
+  margin-bottom: 5px; 
 }
 
-.update-location-container .btn,
 .location-form .btn {
-  margin-top: 15px;
-  padding: 10px 20px; 
+  margin-top: 10px; 
+  padding: 8px 15px; 
 }
 
-.update-location-container select,
 .location-form input,
 .location-form textarea {
-  padding: 10px; 
-  margin-bottom: 15px;
+  padding: 8px; 
+  margin-bottom: 10px; 
   border-radius: 5px;
   border: 1px solid #ccc;
-  font-size: 1rem; 
+  font-size: 0.9rem; 
 }
 
 .location-form input[type="text"],
 .location-form input[type="email"],
-.location-form input[type="number"],
 .location-form textarea {
   width: 100%;
 }
 
+
 .location-form textarea {
-  resize: vertical; 
-  min-height: 100px; 
+  resize: vertical;
+  min-height: 80px; 
 }
 
-
+.company-logo-LocationForm {
+  width: 80%; 
+  height: auto;
+  margin-bottom: 15px; 
+  margin-left: 60px;
+}

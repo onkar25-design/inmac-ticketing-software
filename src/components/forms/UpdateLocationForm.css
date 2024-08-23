@@ -1,0 +1,44 @@
+.update-location-form {
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-width: 100%;
+    width: 600px;
+  }
+  
+  .headings {
+    color: #41B3A2;
+    font-family: 'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+    margin-bottom: 15px; 
+  }
+  
+  .update-location-form .btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+  }
+  
+  .update-location-form select,
+  .update-location-form input,
+  .update-location-form textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  
+  .update-location-form input[type="text"],
+  .update-location-form input[type="email"],
+  .update-location-form textarea {
+    width: 100%;
+  }
+  
+  .update-location-form textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  

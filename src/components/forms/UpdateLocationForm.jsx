@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './LocationForm.css';
+import './UpdateLocationForm.css';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { supabase } from '../../supabaseClient';
 
@@ -29,9 +29,9 @@ const UpdateLocationForm = () => {
   }, []);
 
   const handleLocationChange = (e) => {
-    const selectedId = Number(e.target.value); 
+    const selectedId = Number(e.target.value);
     const location = locations.find((loc) => loc.id === selectedId);
-    
+
     if (location) {
       setSelectedLocation(location);
       setFormData({
@@ -72,7 +72,7 @@ const UpdateLocationForm = () => {
       setMessage('Error updating data: ' + error.message);
     } else {
       setMessage('Data updated successfully');
-    
+
       setSelectedLocation(null);
       setFormData({
         branchName: '',
@@ -97,7 +97,7 @@ const UpdateLocationForm = () => {
           setMessage('Error deleting location: ' + error.message);
         } else {
           setMessage('Location deleted successfully');
-          
+
           setSelectedLocation(null);
           setFormData({
             branchName: '',
@@ -107,7 +107,7 @@ const UpdateLocationForm = () => {
             contactNumber: '',
             emailId: ''
           });
-          
+
           const { data, error } = await supabase.from('locations').select('*');
           if (error) {
             console.error('Error fetching locations:', error);
@@ -120,7 +120,7 @@ const UpdateLocationForm = () => {
   };
 
   return (
-    <Form className="location-form" onSubmit={handleSubmit}>
+    <Form className="update-location-form" onSubmit={handleSubmit}>
       <h2 className="text-center mb-4">Update Location</h2>
       {message && <Alert variant={message.startsWith('Error') ? 'danger' : 'success'}>{message}</Alert>}
       <Form.Group className="mb-3">
