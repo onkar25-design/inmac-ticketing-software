@@ -1,33 +1,122 @@
-
-.update-engineer-container {
-  flex: 1; 
+.update-engineer-form {
   display: flex;
   flex-direction: column;
-  padding: 25px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+  padding: 20px;
+  border: none; 
+  background-color: #ffffff;
+  width: 100%; 
+  max-width: 100%; 
+  margin: 0;
+  box-shadow: none; 
+  border-radius: 0;
 }
 
-.update-engineer-container .btn {
+.update-engineer-form h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.update-engineer-form .form-group {
+  margin-bottom: 15px; 
+}
+
+.update-engineer-form .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+}
+
+.update-engineer-form .form-control,
+.update-engineer-form .form-select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.update-engineer-form .toggle-switch {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 50px; 
+  height: 25px; 
+  background-color: #ccc;
+  border-radius: 25px;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.update-engineer-form .toggle-switch.active {
+  background-color: #1aba52;
+}
+
+.update-engineer-form .toggle-switch .slider {
+  width: 20px; 
+  height: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2.5px; 
+  left: 2.5px; 
+  transition: transform 0.3s ease;
+}
+
+.update-engineer-form .toggle-switch.active .slider {
+  transform: translateX(25px); 
+}
+
+.update-engineer-form .text-center {
+  text-align: center;
+}
+
+.update-engineer-form .btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1aba52;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
   margin-top: 15px;
 }
 
-.update-engineer-container select {
-  padding: 8px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+.update-engineer-form .btn:hover {
+  background-color: #048008;
+}
+
+.update-engineer-form .btn-outline-danger {
+  border: 1px solid #dc3545;
+  background-color: #dc3545;
+  color: #ffffff;
+  
+}
+
+.update-engineer-form .btn-outline-danger:hover {
+  background-color: #ea1329;
+  color: #ffffff;
 }
 
 .alert {
   margin-bottom: 20px;
+  color: #060606;
+  font-size: 1rem;
 }
 
-.company-logo-EngineerForm{
+.company-logo-EngineerForm {
   width: 700px; 
   height: auto;
-  margin-bottom: 0;
+  margin-bottom: 10px;
   margin-top: 0;
-  
+}
+
+.update-headings{
+  color: #41B3A2;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
 }

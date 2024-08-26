@@ -6,6 +6,7 @@ import companyLogo from './company-logo.png';
 
 const EngineerForm = () => {
   const [isFieldEngineer, setIsFieldEngineer] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // New loading state
   const [formData, setFormData] = useState({
     name: '',
     phone_number: '',
@@ -26,11 +27,37 @@ const EngineerForm = () => {
     });
   };
 
+  // Email validation function
+  const isValidEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  // Phone number validation function
+  const isValidPhoneNumber = (phone) => {
+    const re = /^[0-9]{10}$/; // Assuming a 10-digit phone number format
+    return re.test(phone);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Start loading
 
     if (!formData.name || !formData.phone_number || !formData.email || !formData.location) {
       setAlert({ show: true, message: 'Please fill out all required fields', variant: 'danger' });
+      setIsLoading(false); // Stop loading
+      return;
+    }
+
+    if (!isValidEmail(formData.email)) {
+      setAlert({ show: true, message: 'Please enter a valid email address', variant: 'danger' });
+      setIsLoading(false); // Stop loading
+      return;
+    }
+
+    if (!isValidPhoneNumber(formData.phone_number)) {
+      setAlert({ show: true, message: 'Please enter a valid 10-digit phone number', variant: 'danger' });
+      setIsLoading(false); // Stop loading
       return;
     }
 
@@ -51,15 +78,19 @@ const EngineerForm = () => {
       setAlert({ show: true, message: 'Error inserting data', variant: 'danger' });
     } else {
       setAlert({ show: true, message: 'Engineer added successfully', variant: 'success' });
-      setFormData({
-        name: '',
-        phone_number: '',
-        email: '',
-        location: '',
-        domain: ''
-      });
-      setIsFieldEngineer(false);
+      setTimeout(() => { // Delay reset to allow user to see success message
+        setFormData({
+          name: '',
+          phone_number: '',
+          email: '',
+          location: '',
+          domain: ''
+        });
+        setIsFieldEngineer(false);
+      }, 2000);
     }
+
+    setIsLoading(false); // Stop loading
   };
 
   return (
@@ -106,7 +137,18 @@ const EngineerForm = () => {
 
             <Form.Group className="mb-3 d-flex align-items-center">
               <Form.Label className="headings me-3">Field Engineer</Form.Label>
-              <div className="toggle-switch" onClick={toggleFieldEngineer}>
+              <div 
+                className={`toggle-switch ${isFieldEngineer ? 'active' : ''}`}
+                onClick={toggleFieldEngineer}
+                role="switch"
+                aria-checked={isFieldEngineer}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    toggleFieldEngineer();
+                  }
+                }}
+              >
                 <div className={`slider ${isFieldEngineer ? 'active' : ''}`}></div>
               </div>
             </Form.Group>
@@ -138,8 +180,8 @@ const EngineerForm = () => {
             </Form.Group>
 
             <div className="text-center">
-              <Button variant="danger" type="submit">
-                Submit
+              <Button variant="danger" type="submit" disabled={isLoading}>
+                {isLoading ? 'Submitting...' : 'Submit'}
               </Button>
             </div>
           </Form>
