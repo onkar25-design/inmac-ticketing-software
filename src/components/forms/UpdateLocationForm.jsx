@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import './UpdateLocationForm.css';
 import { Form, Button, Alert } from 'react-bootstrap';
+import Select from 'react-select';
 import { supabase } from '../../supabaseClient';
+import companyLogo from './company-logo.png'; 
 
 const UpdateLocationForm = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [formData, setFormData] = useState({
-    branchName: '',
-    address: '',
-    pincode: '',
+    companyName: '',
+    branchLocation: '',
+    city: '',
     contactPersonName: '',
     contactNumber: '',
-    emailId: ''
+    pincode: '',
+    emailId: '',
+    address: ''
   });
   const [message, setMessage] = useState('');
 
@@ -28,19 +32,29 @@ const UpdateLocationForm = () => {
     fetchLocations();
   }, []);
 
-  const handleLocationChange = (e) => {
-    const selectedId = Number(e.target.value);
-    const location = locations.find((loc) => loc.id === selectedId);
-
-    if (location) {
-      setSelectedLocation(location);
+  const handleSelectChange = (selectedOption) => {
+    setSelectedLocation(selectedOption);
+    if (selectedOption) {
       setFormData({
-        branchName: location.branch_name || '',
-        address: location.address || '',
-        pincode: location.pincode || '',
-        contactPersonName: location.contact_person_name || '',
-        contactNumber: location.contact_number || '',
-        emailId: location.email_id || ''
+        companyName: selectedOption.company_name || '',
+        branchLocation: selectedOption.branch_location || '',
+        city: selectedOption.city || '',
+        contactPersonName: selectedOption.contact_person_name || '',
+        contactNumber: selectedOption.contact_number || '',
+        pincode: selectedOption.pincode || '',
+        emailId: selectedOption.email_id || '',
+        address: selectedOption.address || ''
+      });
+    } else {
+      setFormData({
+        companyName: '',
+        branchLocation: '',
+        city: '',
+        contactPersonName: '',
+        contactNumber: '',
+        pincode: '',
+        emailId: '',
+        address: ''
       });
     }
   };
@@ -54,17 +68,19 @@ const UpdateLocationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { branchName, address, pincode, contactPersonName, contactNumber, emailId } = formData;
+    const { companyName, branchLocation, city, contactPersonName, contactNumber, pincode, emailId, address } = formData;
 
     const { error } = await supabase
       .from('locations')
       .update({
-        branch_name: branchName,
-        address,
-        pincode,
+        company_name: companyName,
+        branch_location: branchLocation,
+        city,
         contact_person_name: contactPersonName,
         contact_number: contactNumber,
-        email_id: emailId
+        pincode,
+        email_id: emailId,
+        address
       })
       .eq('id', selectedLocation.id);
 
@@ -75,13 +91,22 @@ const UpdateLocationForm = () => {
 
       setSelectedLocation(null);
       setFormData({
-        branchName: '',
-        address: '',
-        pincode: '',
+        companyName: '',
+        branchLocation: '',
+        city: '',
         contactPersonName: '',
         contactNumber: '',
-        emailId: ''
+        pincode: '',
+        emailId: '',
+        address: ''
       });
+
+      const { data, error } = await supabase.from('locations').select('*');
+      if (error) {
+        console.error('Error fetching locations:', error);
+      } else {
+        setLocations(data);
+      }
     }
   };
 
@@ -100,12 +125,14 @@ const UpdateLocationForm = () => {
 
           setSelectedLocation(null);
           setFormData({
-            branchName: '',
-            address: '',
-            pincode: '',
+            companyName: '',
+            branchLocation: '',
+            city: '',
             contactPersonName: '',
             contactNumber: '',
-            emailId: ''
+            pincode: '',
+            emailId: '',
+            address: ''
           });
 
           const { data, error } = await supabase.from('locations').select('*');
@@ -119,30 +146,58 @@ const UpdateLocationForm = () => {
     }
   };
 
+  // Transform location data for react-select
+  const options = locations.map((loc) => ({
+    value: loc.id,
+    label: `${loc.company_name} - ${loc.branch_location}`,
+    ...loc
+  }));
+
   return (
     <Form className="update-location-form" onSubmit={handleSubmit}>
+      <img src={companyLogo} alt="Company Logo" className="company-logo-LocationForm" />
       <h2 className="text-center mb-4">Update Location</h2>
       {message && <Alert variant={message.startsWith('Error') ? 'danger' : 'success'}>{message}</Alert>}
       <Form.Group className="mb-3">
         <Form.Label className="headings">Select Location*</Form.Label>
-        <Form.Select onChange={handleLocationChange} value={selectedLocation ? selectedLocation.id : ''}>
-          <option value="">Select Location</option>
-          {locations.map((location) => (
-            <option key={location.id} value={location.id}>
-              {location.branch_name}
-            </option>
-          ))}
-        </Form.Select>
+        <Select
+          options={options}
+          value={selectedLocation ? options.find(opt => opt.value === selectedLocation.id) : null}
+          onChange={handleSelectChange}
+          placeholder="Search and select location"
+        />
       </Form.Group>
 
       {selectedLocation && (
         <>
           <Form.Group className="mb-3">
-            <Form.Label className="headings">Company - Branch*</Form.Label>
+            <Form.Label className="headings">Company Name*</Form.Label>
             <Form.Control
               type="text"
-              name="branchName"
-              value={formData.branchName}
+              name="companyName"
+              value={formData.companyName}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="headings">Branch Location*</Form.Label>
+            <Form.Control
+              type="text"
+              name="branchLocation"
+              value={formData.branchLocation}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="headings">City*</Form.Label>
+            <Form.Control
+              type="text"
+              name="city"
+              value={formData.city}
               onChange={handleChange}
               required
             />
@@ -208,7 +263,7 @@ const UpdateLocationForm = () => {
             <Button variant="danger" type="submit">
               Update
             </Button>
-            <Button variant="secondary" onClick={handleDelete} className="ms-3">
+            <Button variant="secondary" onClick={handleDelete} className=" ms-3 btn-outline-danger ">
               Delete Location
             </Button>
           </div>

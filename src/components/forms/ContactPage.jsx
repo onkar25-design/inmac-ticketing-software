@@ -18,7 +18,7 @@ const ContactPage = () => {
   const [initialEngineer, setInitialEngineer] = useState(null);
   const [selectedEngineer, setSelectedEngineer] = useState(null); 
   const [suggestions, setSuggestions] = useState([]);
-  const [noResults, setNoResults] = useState(false); // Added state for no results
+  const [noResults, setNoResults] = useState(false); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -60,11 +60,11 @@ const ContactPage = () => {
         engineer.name = capitalizeFirstLetter(engineer.name);
       });
       if (data.length === 0) {
-        setNoResults(true); // Set no results flag
-        setEngineers([]); // Clear engineers list
+        setNoResults(true); 
+        setEngineers([]); 
       } else {
-        setNoResults(false); // Reset no results flag
-        setEngineers([data[0]]); // Display only the first engineer
+        setNoResults(false); 
+        setEngineers([data[0]]); 
       }
       setSuggestions(data);
     }
@@ -120,7 +120,7 @@ const ContactPage = () => {
     setSearchQuery(suggestion.name); 
     setEngineers([suggestion]); 
     setSuggestions([]); 
-    setNoResults(false); // Reset no results flag
+    setNoResults(false); 
   };
 
   const handleClearSearch = () => {
@@ -128,7 +128,7 @@ const ContactPage = () => {
     setSuggestions([]);
     setEngineers([]);
     fetchInitialEngineer(); 
-    setNoResults(false); // Reset no results flag
+    setNoResults(false); 
   };
 
   const displayedEngineer = searchQuery ? engineers[0] : initialEngineer;
@@ -295,7 +295,7 @@ const ContactPage = () => {
               ))}
             </ul>
           )}
-          {noResults && <p className="no-results-message">No such engineer found.</p>} {/* No results message */}
+          {noResults && <p className="no-results-message">No such engineer found.</p>} 
         </div>
         <div className="contact-info-box">
           <h3>Engineer Information</h3>
