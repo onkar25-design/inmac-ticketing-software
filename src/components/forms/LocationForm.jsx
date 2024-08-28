@@ -1,34 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LocationForm.css'; 
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import { supabase } from '../../supabaseClient';
 import { Bar } from 'react-chartjs-2';
 import EngineerModal from './AddEngineerModal'; 
 import UpdateLocationForm from './UpdateLocationForm'; 
-
-const chartData = {
-  labels: ['City A', 'City B', 'City C', 'City D', 'City E'],
-  datasets: [
-    {
-      label: 'Number of Companies',
-      data: [10, 20, 30, 40, 50],
-      backgroundColor: 'rgba(75,192,192,0.4)',
-      borderColor: 'rgba(75,192,192,1)',
-      borderWidth: 1,
-    },
-  ],
-};
-
-const chartOptions = {
-  indexAxis: 'y', 
-  responsive: true,
-  maintainAspectRatio: false,
-  scales: {
-    x: {
-      beginAtZero: true,
-    },
-  },
-};
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -52,6 +28,7 @@ const AddLocationForm = () => {
   });
 
   const [showModal, setShowModal] = useState(false);
+  const [chartData, setChartData] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -112,20 +89,71 @@ const AddLocationForm = () => {
         emailId: '',
         address: ''
       });
+
+     
+      fetchChartData();
     }
   };
+
+  const fetchChartData = async () => {
+    const { data, error } = await supabase
+      .from('locations')
+      .select('city');
+
+    if (error) {
+      console.error('Error fetching data:', error);
+      return;
+    }
+
+   
+    const cityCounts = data.reduce((acc, { city }) => {
+      acc[city] = (acc[city] || 0) + 1;
+      return acc;
+    }, {});
+
+    const labels = Object.keys(cityCounts);
+    const values = Object.values(cityCounts);
+
+    const newChartData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Number of Companies',
+          data: values,
+          backgroundColor: 'rgba(75,192,192,0.4)',
+          borderColor: 'rgba(75,192,192,1)',
+          borderWidth: 1,
+        },
+      ],
+    };
+
+    setChartData(newChartData);
+  };
+
+  useEffect(() => {
+    fetchChartData();
+  }, []);
 
   return (
     <Container fluid className="location-form-container">
       <Row className="w-100 h-100">
         <Col xs={12} md={6} className="chart-container">
-          <Bar data={chartData} options={chartOptions} />
+          {chartData && <Bar data={chartData} options={{
+            indexAxis: 'y', 
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                beginAtZero: true,
+              },
+            },
+          }} />}
         </Col>
         <Col xs={12} md={6} className="form-container">
           <Form className="location-form" onSubmit={handleSubmit}>
             <h2 className="text-center mb-4">Add Location</h2>
             {alert.message && (
-              <Alert variant={alert.variant} className="text-center mb-4">
+              <Alert variant={alert.variant} className="text-center mb-4" dismissible onClose={() => setAlert({ ...alert, message: '' })}>
                 {alert.message}
               </Alert>
             )}

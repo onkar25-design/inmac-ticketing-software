@@ -7,8 +7,14 @@
 .ticket-form {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 600px; 
+  padding: 20px;
+  border: none; 
+  background-color: #ffffff;
+  width: 100%; 
+  max-width: 100%; 
+  margin: 0;
+  box-shadow: none; 
+  border-radius: 0;
 }
 
 .ticket-form .form-group {
@@ -18,8 +24,56 @@
 .text-center {
   text-align: center;
 }
-.headings{
+
+.headings {
   color: #41B3A2;
-  font-family:'Arial Narrow Bold', sans-serif;
+  font-family: 'Arial Narrow Bold', sans-serif;
   font-weight: bold;
+}
+
+.company-logo-TicketForm {
+  width: 100%; /* Make logo responsive */
+  max-width: 700px;
+  height: auto;
+  margin-bottom: 10px; 
+  margin-top: 0;
+}
+
+.ticket-form .btn {
+  padding: 12px 20px; 
+  border: none; 
+  border-radius: 5px; 
+  background-color: #1aba52; 
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+
+.ticket-form .btn:hover {
+  background-color: #048008; 
+}
+
+/* Additional Styles */
+.d-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.d-flex .flex-grow-1 {
+  flex-grow: 1;
+}
+
+.ms-3 {
+  margin-left: 1rem;
+}
+
+.form-select {
+  max-width: 100%;
+  box-sizing: border-box; /* Ensure dropdown doesn't overflow */
+}
+
+.form-control {
+  box-sizing: border-box; /* Ensure textarea and input fields don't overflow */
 }

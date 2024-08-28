@@ -90,7 +90,7 @@ const EngineerForm = () => {
       }, 2000);
     }
 
-    setIsLoading(false); // Stop loading
+    setIsLoading(false); 
   };
 
   return (
@@ -100,7 +100,16 @@ const EngineerForm = () => {
           <Form className="engineer-form" onSubmit={handleSubmit}>
             <img src={companyLogo} alt="Company Logo" className="company-logo-EngineerForm" />
             <h2 className="text-center mb-4">Add New Engineer</h2>
-            {alert.show && <Alert variant={alert.variant}>{alert.message}</Alert>}
+            {alert.show && (
+              <Alert 
+                variant={alert.variant} 
+                className="alert-dismissible"
+                onClose={() => setAlert({ ...alert, show: false })}
+                dismissible
+              >
+                {alert.message}
+              </Alert>
+            )}
             <Form.Group className="mb-3">
               <Form.Label className="headings">Name*</Form.Label>
               <Form.Control 

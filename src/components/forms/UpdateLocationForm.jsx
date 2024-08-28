@@ -18,7 +18,7 @@ const UpdateLocationForm = () => {
     emailId: '',
     address: ''
   });
-  const [message, setMessage] = useState('');
+  const [alert, setAlert] = useState({ show: false, message: '', variant: '' });
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -85,9 +85,9 @@ const UpdateLocationForm = () => {
       .eq('id', selectedLocation.id);
 
     if (error) {
-      setMessage('Error updating data: ' + error.message);
+      setAlert({ show: true, message: 'Error updating data: ' + error.message, variant: 'danger' });
     } else {
-      setMessage('Data updated successfully');
+      setAlert({ show: true, message: 'Data updated successfully', variant: 'success' });
 
       setSelectedLocation(null);
       setFormData({
@@ -119,9 +119,9 @@ const UpdateLocationForm = () => {
           .eq('id', selectedLocation.id);
 
         if (error) {
-          setMessage('Error deleting location: ' + error.message);
+          setAlert({ show: true, message: 'Error deleting location: ' + error.message, variant: 'danger' });
         } else {
-          setMessage('Location deleted successfully');
+          setAlert({ show: true, message: 'Location deleted successfully', variant: 'success' });
 
           setSelectedLocation(null);
           setFormData({
@@ -157,7 +157,16 @@ const UpdateLocationForm = () => {
     <Form className="update-location-form" onSubmit={handleSubmit}>
       <img src={companyLogo} alt="Company Logo" className="company-logo-LocationForm" />
       <h2 className="text-center mb-4">Update Location</h2>
-      {message && <Alert variant={message.startsWith('Error') ? 'danger' : 'success'}>{message}</Alert>}
+      {alert.show && (
+        <Alert 
+          variant={alert.variant} 
+          className="alert-dismissible"
+          onClose={() => setAlert({ ...alert, show: false })}
+          dismissible
+        >
+          {alert.message}
+        </Alert>
+      )}
       <Form.Group className="mb-3">
         <Form.Label className="headings">Select Location*</Form.Label>
         <Select
@@ -263,7 +272,7 @@ const UpdateLocationForm = () => {
             <Button variant="danger" type="submit">
               Update
             </Button>
-            <Button variant="secondary" onClick={handleDelete} className=" ms-3 btn-outline-danger ">
+            <Button variant="secondary" onClick={handleDelete} className="ms-3 btn-outline-danger">
               Delete Location
             </Button>
           </div>

@@ -81,7 +81,16 @@ const UpdateEngineerForm = ({ engineer, onSave, onClose }) => {
     <div className="update-engineer-form">
       <img src={companyLogo} alt="Company Logo" className="company-logo-EngineerForm" />
       <h2 className="text-center mb-4">Update Engineer</h2>
-      {alert.show && <Alert variant={alert.variant}>{alert.message}</Alert>}
+      {alert.show && (
+        <Alert 
+          variant={alert.variant} 
+          className="alert-dismissible"
+          onClose={() => setAlert({ ...alert, show: false })}
+          dismissible
+        >
+          {alert.message}
+        </Alert>
+      )}
       <Form onSubmit={handleUpdateSubmit}>
         <Form.Group className="mb-3 update-headings">
           <Form.Label>Name*</Form.Label>
