@@ -1,11 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
 import companyLogo from './company-logo.png'; 
+import { supabase } from '../../supabaseClient'; 
 
 const Dashboard = () => {
-  const openTickets = 23; 
-  const resolvedTickets = 42; 
-  const totalTickets = openTickets + resolvedTickets;
+  const [openTickets, setOpenTickets] = useState(0);
+  const [resolvedTickets, setResolvedTickets] = useState(0);
+  const [totalTickets, setTotalTickets] = useState(0);
+
+  useEffect(() => {
+    const fetchTicketData = async () => {
+      const { data, error } = await supabase
+        .from('ticket_main')
+        .select('paused, completed');
+
+      if (error) {
+        console.error('Error fetching ticket data:', error);
+        return;
+      }
+
+      const openCount = data.filter(ticket => !ticket.completed).length;
+      const pausedCount = data.filter(ticket => ticket.paused && !ticket.completed).length;
+      setOpenTickets(pausedCount + openCount - pausedCount);
+
+     
+      const resolvedCount = data.filter(ticket => ticket.completed).length;
+      setResolvedTickets(resolvedCount);
+
+      
+      setTotalTickets(data.length);
+    };
+
+    fetchTicketData();
+  }, []);
 
   return (
     <div className="dashboard">
