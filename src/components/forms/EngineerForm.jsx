@@ -78,7 +78,7 @@ const EngineerForm = () => {
       setAlert({ show: true, message: 'Error inserting data', variant: 'danger' });
     } else {
       setAlert({ show: true, message: 'Engineer added successfully', variant: 'success' });
-      setTimeout(() => { // Delay reset to allow user to see success message
+      setTimeout(() => { 
         setFormData({
           name: '',
           phone_number: '',
@@ -184,6 +184,8 @@ const EngineerForm = () => {
                 <option>Hardware Engineer</option>
                 <option>PM Engineer</option>
                 <option>Printer Engineer</option>
+                <option>Software Engineer</option>
+                <option>Developer</option>
                 <option>Other</option>
               </Form.Select>
             </Form.Group>
