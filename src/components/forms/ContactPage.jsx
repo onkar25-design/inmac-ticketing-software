@@ -16,15 +16,22 @@ const ContactPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [engineers, setEngineers] = useState([]);
   const [initialEngineer, setInitialEngineer] = useState(null);
-  const [selectedEngineer, setSelectedEngineer] = useState(null); 
+  const [selectedEngineer, setSelectedEngineer] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
-  const [noResults, setNoResults] = useState(false); 
+  const [noResults, setNoResults] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
     fetchInitialEngineer();
   }, []);
+
+  useEffect(() => {
+    if (selectedEngineer) {
+      fetchTickets(selectedEngineer.name); 
+    }
+  }, [selectedEngineer]);
 
   const fetchInitialEngineer = useCallback(async () => {
     setLoading(true);
@@ -39,7 +46,25 @@ const ContactPage = () => {
         engineer.name = capitalizeFirstLetter(engineer.name);
       });
       setInitialEngineer(data[0]);
-      setEngineers(data); 
+      setEngineers(data);
+      setSelectedEngineer(data[0]); 
+    }
+    setLoading(false);
+  }, []);
+
+  const fetchTickets = useCallback(async (engineerName) => {
+    setLoading(true);
+    setError(null);
+    const { data, error } = await supabase
+      .from('ticket_main')
+      .select('*')
+      .ilike('engineer', `%${engineerName}%`); 
+
+    if (error) {
+      setError('Error fetching tickets.');
+      console.error('Error fetching tickets:', error);
+    } else {
+      setTickets(data);
     }
     setLoading(false);
   }, []);
@@ -60,11 +85,12 @@ const ContactPage = () => {
         engineer.name = capitalizeFirstLetter(engineer.name);
       });
       if (data.length === 0) {
-        setNoResults(true); 
-        setEngineers([]); 
+        setNoResults(true);
+        setEngineers([]);
       } else {
-        setNoResults(false); 
-        setEngineers([data[0]]); 
+        setNoResults(false);
+        setEngineers([data[0]]);
+        setSelectedEngineer(data[0]); 
       }
       setSuggestions(data);
     }
@@ -99,7 +125,7 @@ const ContactPage = () => {
   const handleCloseAddModal = () => setShowAddModal(false);
 
   const handleOpenUpdateModal = (engineer) => {
-    setSelectedEngineer(engineer); 
+    setSelectedEngineer(engineer);
     setShowUpdateModal(true);
   };
 
@@ -117,45 +143,32 @@ const ContactPage = () => {
   };
 
   const handleSuggestionClick = (suggestion) => {
-    setSearchQuery(suggestion.name); 
-    setEngineers([suggestion]); 
-    setSuggestions([]); 
-    setNoResults(false); 
+    setSearchQuery(suggestion.name);
+    setEngineers([suggestion]);
+    setSuggestions([]);
+    setNoResults(false);
+    setSelectedEngineer(suggestion); 
   };
 
   const handleClearSearch = () => {
     setSearchQuery('');
     setSuggestions([]);
     setEngineers([]);
-    fetchInitialEngineer(); 
-    setNoResults(false); 
+    fetchInitialEngineer();
+    setNoResults(false);
   };
 
   const displayedEngineer = searchQuery ? engineers[0] : initialEngineer;
-
-  const dummyTimelineData = [
-    {
-      date: '2024-08-20',
-      status: 'Completed',
-      tickets: ['Ticket 123', 'Ticket 456'],
-    },
-    {
-      date: '2024-08-21',
-      status: 'Paused',
-      tickets: ['Ticket 789'],
-    },
-    {
-      date: '2024-08-22',
-      status: 'Not Completed',
-      tickets: ['Ticket 101', 'Ticket 102'],
-    },
-  ];
 
   const pieChartData = {
     labels: ['Completed', 'Paused', 'Not Completed'],
     datasets: [
       {
-        data: [40, 20, 30],
+        data: [
+          tickets.filter(ticket => ticket.completed).length,
+          tickets.filter(ticket => ticket.paused).length,
+          tickets.filter(ticket => !ticket.completed && !ticket.paused).length
+        ],
         backgroundColor: ['#d4edda', '#fff3cd', '#f8d7da'],
         borderColor: '#fff',
         borderWidth: 1,
@@ -195,19 +208,6 @@ const ContactPage = () => {
     },
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Completed':
-        return '#d4edda'; 
-      case 'Paused':
-        return '#fff3cd'; 
-      case 'Not Completed':
-        return '#f8d7da'; 
-      default:
-        return '#ffffff'; 
-    }
-  };
-
   const capitalizeFirstLetter = (name) => {
     if (!name) return '';
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
@@ -215,7 +215,7 @@ const ContactPage = () => {
 
   const getInitial = (name) => {
     if (!name) return '';
-    const [firstName] = name.split(' '); 
+    const [firstName] = name.split(' ');
     return firstName.charAt(0).toUpperCase();
   };
 
@@ -245,27 +245,49 @@ const ContactPage = () => {
 
         <div className="timeline-section">
           <h3>Engineers Timeline</h3>
-          <div className="timeline-content">
-            <ul className="timeline">
-              {dummyTimelineData.map((entry, index) => (
-                <li
-                  key={index}
-                  className="timeline-entry"
-                  style={{ backgroundColor: getStatusColor(entry.status) }}
-                >
-                  <div className="timeline-date">{entry.date}</div>
-                  <div className="timeline-details">
-                    <p>Status: {entry.status}</p>
-                    <ul>
-                      {entry.tickets.map((ticket, idx) => (
-                        <li key={idx}>{ticket}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {loading ? (
+            <div className="loading-spinner">Loading...</div>
+          ) : error ? (
+            <p className="error-message">{error}</p>
+          ) : (
+            <table className="ticket-table">
+              <thead>
+                <tr>
+                  <th>Ticket Number</th>
+                  <th>Company Branch</th>
+                  <th>Description</th>
+                  <th>Serial Number</th>
+                  <th>Priority</th>
+                  <th>Engineer</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tickets.map(ticket => (
+                  <tr
+                    key={ticket.ticket_number}
+                    className={
+                      ticket.completed ? 'status-completed' :
+                      ticket.paused ? 'status-paused' :
+                      'status-not-completed'
+                    }
+                  >
+                    <td>{ticket.ticket_number}</td>
+                    <td>{ticket.company_branch}</td>
+                    <td>{ticket.description}</td>
+                    <td>{ticket.serial_number}</td>
+                    <td>{ticket.priority}</td>
+                    <td>{ticket.engineer}</td>
+                    <td>
+                      {ticket.completed ? 'Completed' :
+                       ticket.paused ? 'Paused' :
+                       'Not Completed'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
 
@@ -273,12 +295,14 @@ const ContactPage = () => {
         <div className="right-search-bar">
           <div className="search-container">
             <input
+              
+
               className="search-bar"
               type="text"
               placeholder="Search..."
               value={searchQuery}
               onChange={handleSearchChange}
-              onKeyDown={handleSearchKeyDown} 
+              onKeyDown={handleSearchKeyDown}
             />
             {searchQuery && (
               <button className="clear-search-btn" onClick={handleClearSearch}>
@@ -295,8 +319,9 @@ const ContactPage = () => {
               ))}
             </ul>
           )}
-          {noResults && <p className="no-results-message">No such engineer found.</p>} 
+          {noResults && <p className="no-results-message">No such engineer found.</p>}
         </div>
+
         <div className="contact-info-box">
           <h3>Engineer Information</h3>
           {loading ? (
@@ -325,22 +350,26 @@ const ContactPage = () => {
             <p>Loading...</p>
           )}
           <button className="new-engineer-btn" onClick={handleOpenAddModal}>
-            Add Engineer
+            Add New Engineer
           </button>
         </div>
-        <div className="pie-chart-box">
+
+        <div className="chart-container-contact">
           <Pie data={pieChartData} options={pieChartOptions} />
         </div>
       </div>
 
-      <EngineerModal show={showAddModal} onClose={handleCloseAddModal}>
-        <EngineerForm />
-      </EngineerModal>
+      {showAddModal && (
+        <EngineerModal show={showAddModal} onClose={handleCloseAddModal}>
+          <EngineerForm onClose={handleCloseAddModal} />
+        </EngineerModal>
+      )}
 
-      <EngineerModal show={showUpdateModal} onClose={handleCloseUpdateModal} engineer={selectedEngineer}>
-        <UpdateEngineerForm engineer={selectedEngineer} />
-      </EngineerModal>
-
+      {showUpdateModal && selectedEngineer && (
+        <EngineerModal show={showUpdateModal} onClose={handleCloseUpdateModal}>
+          <UpdateEngineerForm engineer={selectedEngineer} onClose={handleCloseUpdateModal} />
+        </EngineerModal>
+      )}
     </div>
   );
 };
