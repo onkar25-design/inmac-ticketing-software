@@ -12,13 +12,22 @@ const ComparisonBarChart = ({ data }) => {
         options={{
           responsive: true,
           maintainAspectRatio: false,
+          indexAxis: 'y', 
           plugins: {
             legend: {
-              position: 'bottom', 
+              position: 'bottom',
             },
             title: {
               display: true,
-              text: 'Completed vs Not Completed Tickets', 
+              
+            },
+          },
+          scales: {
+            x: {
+              stacked: true,
+            },
+            y: {
+              stacked: true,
             },
           },
         }}

@@ -95,3 +95,30 @@
   background-color: #f8d7da;
   color: #721c24;
 }
+
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-preview-item {
+  position: relative;
+  margin: 5px;
+}
+
+.image-preview-thumbnail {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+}
+
+.image-preview-remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: red;
+  font-size: 1.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+}

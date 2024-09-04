@@ -18,7 +18,7 @@ const BarChart = ({ data }) => {
             },
             title: {
               display: true,
-              text: 'Ticket Priority', 
+             
             },
           },
         }}

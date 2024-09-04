@@ -228,3 +228,33 @@ body {
     border-collapse: collapse;
   }
   
+  .timeline-header {
+    display: flex;
+    align-items: center; 
+  }
+
+  .timeline-header h3 {
+    margin: 0;
+    flex-grow: 1; 
+    margin-bottom: 20px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 10px; 
+  }
+  
+  .add-ticket-btn, .edit-ticket-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #2ab92f;
+    color: white;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .add-ticket-btn:hover, .edit-ticket-btn:hover {
+    background-color: #228b22;
+  }

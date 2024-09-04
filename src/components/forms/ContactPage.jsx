@@ -7,6 +7,8 @@ import UpdateEngineerForm from './UpdateEngineerForm';
 import './ContactPage.css';
 import { supabase } from '../../supabaseClient';
 import './UpdateEngineerForm.css';
+import TicketForm from '../forms/TicketForm';
+import UpdateTicketForm from '../forms/UpdateTicketForm';
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
@@ -22,6 +24,8 @@ const ContactPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [tickets, setTickets] = useState([]);
+  const [showAddTicketModal, setShowAddTicketModal] = useState(false);
+  const [showUpdateTicketModal, setShowUpdateTicketModal] = useState(false);
 
   useEffect(() => {
     fetchInitialEngineer();
@@ -32,6 +36,13 @@ const ContactPage = () => {
       fetchTickets(selectedEngineer.name); 
     }
   }, [selectedEngineer]);
+
+  const handleAddTicket = () => setShowAddTicketModal(true);
+  const handleUpdateTicket = () => setShowUpdateTicketModal(true);
+  const handleCloseModal = () => {
+    setShowAddTicketModal(false);
+    setShowUpdateTicketModal(false);
+  };
 
   const fetchInitialEngineer = useCallback(async () => {
     setLoading(true);
@@ -244,7 +255,13 @@ const ContactPage = () => {
         </div>
 
         <div className="timeline-section">
-          <h3>Engineers Timeline</h3>
+          <div className="timeline-header">
+            <h3>Engineers Timeline</h3>
+            <div className="button-group">
+            <button className="add-ticket-btn" onClick={handleAddTicket}>Add Ticket</button>
+             <button className="edit-ticket-btn" onClick={handleUpdateTicket}>Update Ticket</button>
+            </div>
+          </div>
           {loading ? (
             <div className="loading-spinner">Loading...</div>
           ) : error ? (
@@ -358,6 +375,15 @@ const ContactPage = () => {
           <Pie data={pieChartData} options={pieChartOptions} />
         </div>
       </div>
+
+      <EngineerModal show={showAddTicketModal} onClose={handleCloseModal}>
+        <TicketForm />
+      </EngineerModal>
+
+     
+      <EngineerModal show={showUpdateTicketModal} onClose={handleCloseModal}>
+      <UpdateTicketForm /> 
+      </EngineerModal>
 
       {showAddModal && (
         <EngineerModal show={showAddModal} onClose={handleCloseAddModal}>

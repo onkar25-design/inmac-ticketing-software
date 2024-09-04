@@ -146,7 +146,7 @@ const UpdateLocationForm = () => {
     }
   };
 
-  // Transform location data for react-select
+  
   const options = locations.map((loc) => ({
     value: loc.id,
     label: `${loc.company_name} - ${loc.branch_location}`,

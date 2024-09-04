@@ -8,6 +8,7 @@ import TicketForm from './components/forms/TicketForm';
 import EngineerForm from './components/forms/EngineerForm';
 import LocationForm from './components/forms/LocationForm';
 import ContactPage from './components/forms/ContactPage'; 
+import SupportPage from '../src/components/support-ticket/SupportPage'
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/engineer-form" element={<EngineerForm />} /> 
           <Route path="/location-form" element={<LocationForm />} />
           <Route path="/contacts" element={<ContactPage />} /> 
+          <Route path="/support-page" element={<SupportPage />} /> 
         </Routes>
       </div>
     </Router>

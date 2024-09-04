@@ -18,7 +18,7 @@ const PieChart = ({ data }) => {
             },
             title: {
               display: true,
-              text: 'Ticket Priority Distribution', 
+              
             },
           },
         }}

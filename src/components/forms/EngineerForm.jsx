@@ -6,7 +6,7 @@ import companyLogo from './company-logo.png';
 
 const EngineerForm = () => {
   const [isFieldEngineer, setIsFieldEngineer] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // New loading state
+  const [isLoading, setIsLoading] = useState(false); 
   const [formData, setFormData] = useState({
     name: '',
     phone_number: '',
@@ -27,37 +27,37 @@ const EngineerForm = () => {
     });
   };
 
-  // Email validation function
+  
   const isValidEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
   };
 
-  // Phone number validation function
+  
   const isValidPhoneNumber = (phone) => {
-    const re = /^[0-9]{10}$/; // Assuming a 10-digit phone number format
+    const re = /^[0-9]{10}$/; 
     return re.test(phone);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Start loading
+    setIsLoading(true); 
 
     if (!formData.name || !formData.phone_number || !formData.email || !formData.location) {
       setAlert({ show: true, message: 'Please fill out all required fields', variant: 'danger' });
-      setIsLoading(false); // Stop loading
+      setIsLoading(false); 
       return;
     }
 
     if (!isValidEmail(formData.email)) {
       setAlert({ show: true, message: 'Please enter a valid email address', variant: 'danger' });
-      setIsLoading(false); // Stop loading
+      setIsLoading(false); 
       return;
     }
 
     if (!isValidPhoneNumber(formData.phone_number)) {
       setAlert({ show: true, message: 'Please enter a valid 10-digit phone number', variant: 'danger' });
-      setIsLoading(false); // Stop loading
+      setIsLoading(false); 
       return;
     }
 

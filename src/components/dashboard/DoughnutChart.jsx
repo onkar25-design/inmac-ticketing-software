@@ -18,7 +18,7 @@ const DoughnutChart = ({ data }) => {
             },
             title: {
               display: true,
-              text: 'Ticket Completion Status', 
+            
             },
           },
         }}
