@@ -72,3 +72,86 @@
   margin-bottom: 10px; 
   margin-top: 0;
 }
+
+/* Default styles for mobile view */
+@media (max-width: 768px) {
+  .engineer-form {
+    padding: 15px;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .toggle-switch {
+    width: 40px; /* Adjust width for smaller screens */
+    height: 20px; /* Adjust height for smaller screens */
+  }
+
+  .toggle-switch .slider {
+    width: 18px; /* Adjust width for smaller screens */
+    height: 18px; /* Adjust height for smaller screens */
+    top: 1px; /* Adjust positioning for smaller screens */
+    left: 1px; /* Adjust positioning for smaller screens */
+  }
+
+  .toggle-switch .slider.active {
+    transform: translateX(20px); /* Adjust the position for smaller screens */
+  }
+
+  .headings {
+    font-size: 1.5rem; /* Adjust font size for smaller screens */
+    margin-bottom: 10px; /* Adjust margin for smaller screens */
+  }
+
+  .engineer-form .btn {
+    padding: 10px 15px; /* Adjust padding for smaller screens */
+    font-size: 0.875rem; /* Adjust font size for smaller screens */
+    margin-top: 10px; /* Adjust margin for smaller screens */
+  }
+
+  .company-logo-EngineerForm {
+    width: 200px; /* Adjust width for smaller screens */
+    height: auto;
+    margin-bottom: 10px;
+  }
+}
+
+/* Additional styles for very small screens (e.g., mobile phones) */
+@media (max-width: 480px) {
+  .engineer-form {
+    padding: 10px; /* Reduce padding for very small screens */
+  }
+
+  .toggle-switch {
+    width: 35px; /* Further reduce width for very small screens */
+    height: 18px; /* Further reduce height for very small screens */
+  }
+
+  .toggle-switch .slider {
+    width: 16px; /* Further reduce width for very small screens */
+    height: 16px; /* Further reduce height for very small screens */
+    top: 1px; /* Adjust positioning for very small screens */
+    left: 1px; /* Adjust positioning for very small screens */
+  }
+
+  .toggle-switch .slider.active {
+    transform: translateX(17px); /* Adjust the position for very small screens */
+  }
+
+  .headings {
+    font-size: 1.25rem; /* Further reduce font size for very small screens */
+    margin-bottom: 8px; /* Adjust margin for very small screens */
+  }
+
+  .engineer-form .btn {
+    padding: 8px 12px; /* Further reduce padding for very small screens */
+    font-size: 0.75rem; /* Further reduce font size for very small screens */
+    margin-top: 8px; 
+  }
+
+  .company-logo-EngineerForm {
+    width: 100%; 
+    height: auto;
+    margin-bottom: 8px; 
+  }
+}

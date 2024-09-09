@@ -255,57 +255,59 @@ const ContactPage = () => {
         </div>
 
         <div className="timeline-section">
-          <div className="timeline-header">
-            <h3>Engineers Timeline</h3>
-            <div className="button-group">
-            <button className="add-ticket-btn" onClick={handleAddTicket}>Add Ticket</button>
-             <button className="edit-ticket-btn" onClick={handleUpdateTicket}>Update Ticket</button>
+            <div className="timeline-header">
+              <h3>Engineers Timeline</h3>
+              <div className="button-group">
+                <button className="add-ticket-btn" onClick={handleAddTicket}>Add Ticket</button>
+                <button className="edit-ticket-btn" onClick={handleUpdateTicket}>Update Ticket</button>
+              </div>
             </div>
+            {loading ? (
+              <div className="loading-spinner">Loading...</div>
+            ) : error ? (
+              <p className="error-message">{error}</p>
+            ) : (
+              <div className="table-wrapper">
+                <table className="ticket-table">
+                  <thead>
+                    <tr>
+                      <th>Ticket Number</th>
+                      <th>Company Branch</th>
+                      <th>Description</th>
+                      <th>Serial Number</th>
+                      <th>Priority</th>
+                      <th>Engineer</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tickets.map(ticket => (
+                      <tr
+                        key={ticket.ticket_number}
+                        className={
+                          ticket.completed ? 'status-completed' :
+                          ticket.paused ? 'status-paused' :
+                          'status-not-completed'
+                        }
+                      >
+                        <td>{ticket.ticket_number}</td>
+                        <td>{ticket.company_branch}</td>
+                        <td>{ticket.description}</td>
+                        <td>{ticket.serial_number}</td>
+                        <td>{ticket.priority}</td>
+                        <td>{ticket.engineer}</td>
+                        <td>
+                          {ticket.completed ? 'Completed' :
+                          ticket.paused ? 'Paused' :
+                          'Not Completed'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
-          {loading ? (
-            <div className="loading-spinner">Loading...</div>
-          ) : error ? (
-            <p className="error-message">{error}</p>
-          ) : (
-            <table className="ticket-table">
-              <thead>
-                <tr>
-                  <th>Ticket Number</th>
-                  <th>Company Branch</th>
-                  <th>Description</th>
-                  <th>Serial Number</th>
-                  <th>Priority</th>
-                  <th>Engineer</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tickets.map(ticket => (
-                  <tr
-                    key={ticket.ticket_number}
-                    className={
-                      ticket.completed ? 'status-completed' :
-                      ticket.paused ? 'status-paused' :
-                      'status-not-completed'
-                    }
-                  >
-                    <td>{ticket.ticket_number}</td>
-                    <td>{ticket.company_branch}</td>
-                    <td>{ticket.description}</td>
-                    <td>{ticket.serial_number}</td>
-                    <td>{ticket.priority}</td>
-                    <td>{ticket.engineer}</td>
-                    <td>
-                      {ticket.completed ? 'Completed' :
-                       ticket.paused ? 'Paused' :
-                       'Not Completed'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
       </div>
 
       <div className="right-side">

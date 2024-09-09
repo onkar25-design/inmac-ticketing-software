@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import './Navbar.css';
-import { FaTicketAlt } from 'react-icons/fa'; 
+import { FaTicketAlt, FaBars, FaTimes } from 'react-icons/fa'; 
 import { Link } from 'react-router-dom'; 
 
-const Navbar = () => {
+const Navbar = ({ onLogout }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">
@@ -12,8 +18,13 @@ const Navbar = () => {
           <h2>Ticket-Mitra</h2>
         </Link>
       </div>
-      <div className="navbar-links">
-          <button className="dropbtn">Tickets</button>
+
+      <button className="menu-button" onClick={toggleMenu}>
+        {isMenuOpen ? <FaTimes /> : <FaBars />}
+      </button>
+
+      <div className={`navbar-links ${isMenuOpen ? 'show' : ''}`}>
+        <button className="dropbtn">Tickets</button>
         <Link to="/location-form"> 
           <button className="dropbtn">Location</button>
         </Link>
@@ -22,11 +33,12 @@ const Navbar = () => {
         </Link>
         <button>Help</button>
       </div>
-      <div className="navbar-profile">
+
+      <div className={`navbar-profile ${isMenuOpen ? 'show' : ''}`}>
         <div className="dropdown">
           <button className="dropbtn">Profile</button>
           <div className="dropdown-content">
-            <button>Logout</button>
+            <button onClick={onLogout}>Logout</button> 
           </div>
         </div>
       </div>

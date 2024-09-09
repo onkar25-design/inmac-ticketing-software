@@ -96,29 +96,146 @@
   color: #721c24;
 }
 
+
+.image-preview-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+
 .image-preview {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.image-preview-item {
   position: relative;
-  margin: 5px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.image-preview-thumbnail {
-  max-width: 100px;
-  max-height: 100px;
-  object-fit: cover;
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
-.image-preview-remove {
+
+.remove-file-button {
   position: absolute;
-  top: 0;
-  right: 0;
-  color: red;
-  font-size: 1.5rem;
-  background: white;
+  top: 5px;
+  right: 5px;
+  background-color: red;
+  color: white;
   border: none;
+  border-radius: 50%;
   cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-file-btn:hover {
+  background-color: darkred;
+}
+
+
+
+@media (max-width: 768px) {
+  .ticket-form-container {
+    padding: 15px; 
+  }
+
+  .ticket-form {
+    padding: 15px; 
+    width: 100%; 
+    box-shadow: none; 
+    border-radius: 0;
+  }
+
+  .ticket-form .form-group {
+    margin-bottom: 1rem; 
+  }
+
+  .headings {
+    font-size: 1.25rem; 
+    margin-bottom: 15px; 
+    text-align: center; 
+  }
+
+  .company-logo-TicketForm {
+    width: 100%; 
+    max-width: 100%; 
+    height: auto;
+    margin-bottom: 10px; 
+  }
+
+  .ticket-form .btn {
+    padding: 10px 15px; 
+    font-size: 0.875rem; 
+    margin-top: 10px; 
+  }
+
+  .alert-dismissible {
+    margin-bottom: 1rem; 
+    max-width: 100%; 
+  }
+
+  .image-preview-container {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
+    gap: 8px; 
+    margin-top: 15px; 
+  }
+
+  .remove-file-button {
+    font-size: 14px; 
+    width: 20px; 
+    height: 20px; 
+  }
+}
+
+
+@media (max-width: 480px) {
+  .ticket-form-container {
+    padding: 10px; 
+  }
+
+  .ticket-form {
+    padding: 10px; 
+  }
+
+  .ticket-form .form-group {
+    margin-bottom: 0.75rem; 
+  }
+
+  .headings {
+    font-size: 1rem; 
+    margin-bottom: 10px; 
+  }
+
+  .ticket-form .btn {
+    padding: 8px 12px; 
+    font-size: 0.75rem; 
+    margin-top: 8px; 
+  }
+
+  .alert-dismissible {
+    margin-bottom: 0.75rem; 
+  }
+
+  .image-preview-container {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+    gap: 6px; 
+    margin-top: 10px;
+  }
+
+  .remove-file-button {
+    font-size: 12px; 
+    width: 18px; 
+    height: 18px; 
+  }
 }

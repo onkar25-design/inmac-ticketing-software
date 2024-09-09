@@ -1,3 +1,4 @@
+
 .chart-container-dashboard {
   display: flex;
   gap: 15px;
@@ -60,4 +61,49 @@
 .chart-box canvas {
   max-width: 100%;
   max-height: 100%;
+}
+
+
+@media (max-width: 768px) {
+  .chart-container-dashboard {
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .chart-filters-dashboard {
+    min-height: auto;
+    padding: 15px;
+  }
+
+  .chart-display-dashboard {
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .chart-box {
+    height: 250px; 
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-container-dashboard {
+    padding: 5px;
+  }
+
+  .chart-filters-dashboard,
+  .chart-display-dashboard {
+    padding: 10px;
+  }
+
+  .chart-display-dashboard {
+    grid-template-columns: 1fr; 
+  }
+
+  .chart-box {
+    height: 200px; 
+    padding: 5px;
+  }
 }

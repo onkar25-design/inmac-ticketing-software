@@ -96,3 +96,137 @@
   margin-bottom: 10px;
   margin-top: 0;
 }
+
+
+@media (max-width: 768px) {
+  .update-location-form {
+    padding: 15px;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .update-location-form h2 {
+    font-size: 1rem; 
+    margin-bottom: 15px;
+  }
+
+  .update-location-form .form-group {
+    margin-bottom: 10px; 
+  }
+
+  .update-location-form .form-group label {
+    font-size: 0.875rem; 
+    margin-bottom: 6px; 
+  }
+
+  .update-location-form select,
+  .update-location-form input,
+  .update-location-form textarea {
+    padding: 10px; 
+    margin-bottom: 10px; 
+    font-size: 0.875rem; 
+  }
+
+  .update-location-form textarea {
+    min-height: 80px; 
+  }
+
+  .update-location-form .btn {
+    padding: 10px 15px; 
+    font-size: 0.875rem; 
+    margin-top: 10px; 
+  }
+
+  .update-location-form .btn-outline-danger {
+    border: 1px solid #dc3545;
+    background-color: #dc3545;
+    color: #ffffff;
+    font-size: 0.875rem; 
+  }
+
+  .update-location-form .btn-outline-danger:hover {
+    background-color: #ea1329;
+    color: #ffffff;
+  }
+
+  .alert {
+    font-size: 0.875rem; 
+    margin-bottom: 15px; 
+  }
+
+  .company-logo-LocationForm {
+    width: 100%; 
+    height: auto;
+    margin-bottom: 8px; 
+  }
+  .headings {
+    color: #41B3A2;
+    font-family: 'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 1rem;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .update-location-form {
+    padding: 10px; 
+  }
+
+  .update-location-form h2 {
+    font-size: 1rem; 
+    margin-bottom: 10px; 
+  }
+
+  .update-location-form .form-group {
+    margin-bottom: 8px; 
+  }
+
+  .update-location-form .form-group label {
+    font-size: 0.75rem; 
+    margin-bottom: 4px; 
+  }
+
+  .update-location-form select,
+  .update-location-form input,
+  .update-location-form textarea {
+    padding: 8px; 
+    margin-bottom: 8px; 
+    font-size: 0.75rem;  
+  }
+
+  .update-location-form textarea {
+    min-height: 60px; 
+  }
+
+  .update-location-form .btn {
+    padding: 8px 12px; 
+    font-size: 0.75rem; 
+    margin-top: 8px; 
+  }
+
+  .update-location-form .btn-outline-danger {
+    font-size: 0.75rem; 
+  }
+
+  .alert {
+    font-size: 0.75rem; 
+    margin-bottom: 10px; 
+  }
+
+  .company-logo-LocationForm {
+    width: 100%; 
+    height: auto;
+    margin-bottom: 6px; 
+  }
+
+  .headings {
+    color: #41B3A2;
+    font-family: 'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 1rem;
+  }
+}

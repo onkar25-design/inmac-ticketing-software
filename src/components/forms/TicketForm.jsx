@@ -15,8 +15,6 @@ const TicketForm = () => {
   const [companyOptions, setCompanyOptions] = useState([]);
   const [ticketNumber, setTicketNumber] = useState('');
   const [alert, setAlert] = useState({ show: false, message: '', variant: '' });
-  const [imageFiles, setImageFiles] = useState([]); // State for selected image files
-  const [imageUrls, setImageUrls] = useState([]); // State to store image URLs
   const [isLoading, setIsLoading] = useState(false); // Loading state for form submission
 
   const fetchLatestTicketNumber = async () => {
@@ -75,38 +73,11 @@ const TicketForm = () => {
     fetchCompanyBranches();
   }, []);
 
-  const handleFileChange = (e) => {
-    setImageFiles([...e.target.files]);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Upload images to Supabase storage and collect their URLs
-    let urls = [];
-    for (let i = 0; i < imageFiles.length; i++) {
-      const file = imageFiles[i];
-      const fileName = `${ticketNumber}-${file.name}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('ticket-image-client') // Ensure bucket name is correct
-        .upload(fileName, file);
-
-      if (uploadError) {
-        console.error('Error uploading image:', uploadError.message);
-        setAlert({ show: true, message: 'Error uploading images', variant: 'danger' });
-        setIsLoading(false);
-        return;
-      } else {
-        const { data: publicData } = supabase.storage
-          .from('ticket-image-client')
-          .getPublicUrl(fileName);
-        urls.push(publicData.publicUrl);
-      }
-    }
-    setImageUrls(urls);
-
-    // Insert ticket data including image URLs
+    // Insert ticket data
     const { data, error } = await supabase
       .from('ticket_main')
       .insert([
@@ -117,7 +88,6 @@ const TicketForm = () => {
           priority,
           engineer: engineer?.value,
           ticket_number: ticketNumber,
-          image_url: urls // Store multiple image URLs as an array
         }
       ]);
 
@@ -134,8 +104,6 @@ const TicketForm = () => {
       setSerialNumber('');
       setPriority('Low');
       setEngineer(null);
-      setImageFiles([]); // Reset image files
-      setImageUrls([]); // Reset image URLs
       setTicketNumber(''); // Reset ticket number
       fetchLatestTicketNumber(); // Fetch new ticket number
     }
@@ -210,16 +178,6 @@ const TicketForm = () => {
             isClearable
             onChange={setEngineer}
             value={engineer}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label className="headings">Upload Images</Form.Label>
-          <Form.Control
-            type="file"
-            accept="image/*"
-            multiple // Allow multiple files
-            onChange={handleFileChange}
           />
         </Form.Group>
 

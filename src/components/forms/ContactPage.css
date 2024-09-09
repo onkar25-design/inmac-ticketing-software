@@ -218,7 +218,13 @@ body {
   .ticket-table td {
     padding: 10px;
   }
-  
+
+  .table-wrapper {
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch; 
+    margin-bottom: 20px; 
+  }
+
   .ticket-table th, .ticket-table td {
     border: 1px solid #010101;
   }
@@ -258,3 +264,148 @@ body {
   .add-ticket-btn:hover, .edit-ticket-btn:hover {
     background-color: #228b22;
   }
+
+ 
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 60px; 
+  }
+
+  .contact-page {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .search-container {
+    width: 100%;
+    margin-bottom: 20px; 
+  }
+
+  .search-bar {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+
+  .clear-search-btn {
+    position: absolute;
+    right: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .suggestions-list {
+    max-height: 150px;
+  }
+
+  .left-side,
+  .right-side {
+    flex: 1;
+    margin-right: 0;
+  }
+
+  .left-side {
+    margin-bottom: 20px;
+  }
+
+  .profile-section,
+  .timeline-section,
+  .contact-info-box,
+  .chart-container-contact {
+    padding: 10px;
+  }
+
+  .timeline-section h3,
+  .contact-info-box h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
+
+  .contact-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-image img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .contact-info {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .edit-engineer-btn,
+  .new-engineer-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .contact-page {
+    padding: 5px;
+  }
+
+  .search-container {
+    margin-bottom: 10px; 
+  }
+
+  .search-bar {
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  .clear-search-btn {
+    right: 10px;
+  }
+
+  .suggestions-list {
+    max-height: 120px;
+  }
+
+  .left-side,
+  .right-side {
+    flex: 1;
+  }
+
+  .profile-section,
+  .timeline-section,
+  .contact-info-box,
+  .chart-container-contact {
+    padding: 8px;
+  }
+
+  .timeline-section h3,
+  .contact-info-box h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+
+  .contact-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-image img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .contact-info {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .edit-engineer-btn,
+  .new-engineer-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}

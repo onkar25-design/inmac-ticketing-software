@@ -8,6 +8,7 @@ import companyLogo from './company-logo.png';
 const UpdateTicketForm = () => {
   const [ticketOptions, setTicketOptions] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]); 
   const [updateData, setUpdateData] = useState({
     company_branch: '',
     description: '',
@@ -16,9 +17,12 @@ const UpdateTicketForm = () => {
     engineer: '', 
     paused: false,
     completed: false,
+    image_urls: [], // Handling array of image URLs
   });
   const [alert, setAlert] = useState({ show: false, message: '', variant: '' });
+  const [isLoading, setIsLoading] = useState(false); // Added isLoading state
 
+  // Fetch tickets for selection dropdown
   useEffect(() => {
     const fetchTickets = async () => {
       const { data, error } = await supabase
@@ -41,6 +45,7 @@ const UpdateTicketForm = () => {
     fetchTickets();
   }, []);
 
+  // Fetch selected ticket details
   useEffect(() => {
     if (selectedTicket) {
       const fetchTicketDetails = async () => {
@@ -61,6 +66,7 @@ const UpdateTicketForm = () => {
             engineer: data.engineer || '', 
             paused: data.paused,
             completed: data.completed,
+            image_urls: data.callreports ? data.callreports.split(',') : [], // Split callreports into an array of URLs
           });
         }
       };
@@ -68,6 +74,97 @@ const UpdateTicketForm = () => {
       fetchTicketDetails();
     }
   }, [selectedTicket]);
+
+  // Handle image file change
+  const handleFileChange = (e) => {
+    if (e.target.files.length > 0) {
+      setImageFiles(Array.from(e.target.files));  // Store selected image files in state
+    }
+  };
+
+  const handleRemoveFile = (fileName) => {
+    setImageFiles((prevFiles) => prevFiles.filter(file => file.name !== fileName));  // Remove specific image file
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+  
+    let urls = [];
+    // Upload images if there are any
+    if (imageFiles.length > 0) {
+      try {
+        for (const file of imageFiles) {
+          const fileName = `${Date.now()}-${file.name}`;
+          const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('call-reports')
+            .upload(fileName, file);
+  
+          if (uploadError) {
+            throw new Error(uploadError.message);
+          }
+  
+          const { data: publicData, error: publicUrlError } = await supabase.storage
+            .from('call-reports')
+            .getPublicUrl(fileName);
+  
+          if (publicUrlError) {
+            throw new Error(publicUrlError.message);
+          }
+  
+          urls.push(decodeURIComponent(publicData.publicUrl));
+        }
+      } catch (error) {
+        console.error('Error uploading images:', error.message);
+        setAlert({ show: true, message: 'Error uploading images', variant: 'danger' });
+        setIsLoading(false);
+        return;
+      }
+    }
+  
+    
+    const combinedImageUrls = [...updateData.image_urls, ...urls];
+    const imageUrlsString = combinedImageUrls.join(',');
+  
+    const dataToUpdate = {
+      company_branch: updateData.company_branch,
+      description: updateData.description,
+      serial_number: updateData.serial_number,
+      priority: updateData.priority,
+      engineer: updateData.engineer || null,
+      paused: updateData.paused,
+      completed: updateData.completed,
+      callreports: imageUrlsString, 
+    };
+  
+    try {
+      const { data, error } = await supabase
+        .from('ticket_main')
+        .update(dataToUpdate)
+        .eq('ticket_number', selectedTicket.value);
+  
+      if (error) {
+        throw new Error(error.message);
+      }
+  
+      setAlert({
+        show: true,
+        message: 'Ticket updated successfully',
+        variant: 'success',
+      });
+      setImageFiles([]);
+    } catch (error) {
+      setAlert({
+        show: true,
+        message: `Error updating ticket: ${error.message}`,
+        variant: 'danger',
+      });
+      console.error('Error updating ticket:', error);
+    }
+  
+    setIsLoading(false);
+  };
+  
 
   const handleUpdateChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -77,181 +174,191 @@ const UpdateTicketForm = () => {
     });
   };
 
-  const handleTogglePaused = () => {
-    setUpdateData((prevData) => ({
-      ...prevData,
-      paused: !prevData.paused,
-    }));
+  const handleRemoveImage = (index) => {
+    setUpdateData((prevData) => {
+      const newImageUrls = prevData.image_urls.filter((_, i) => i !== index);
+      return {
+        ...prevData,
+        image_urls: newImageUrls,
+      };
+    });
   };
 
-  const handleToggleCompleted = () => {
-    setUpdateData((prevData) => ({
-      ...prevData,
-      completed: !prevData.completed,
-    }));
-  };
+   const handleDeleteTicket = async () => {
+    if (!selectedTicket) return;
+    setIsLoading(true);
 
-  const handleUpdateSubmit = async (e) => {
-    e.preventDefault();
-    if (
-      !updateData.company_branch ||
-      !updateData.description ||
-      !updateData.serial_number ||
-      !updateData.priority
-    ) {
+    try {
+      const { data, error } = await supabase
+        .from('ticket_main')
+        .delete()
+        .eq('ticket_number', selectedTicket.value);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
       setAlert({
         show: true,
-        message: 'Please fill out all required fields',
-        variant: 'danger',
+        message: 'Ticket deleted successfully',
+        variant: 'success',
       });
-      return;
-    }
-
-    const { error } = await supabase
-      .from('ticket_main')
-      .update(updateData)
-      .eq('ticket_number', selectedTicket.value);
-
-    if (error) {
-      setAlert({ show: true, message: 'Error updating ticket', variant: 'danger' });
-    } else {
-      setAlert({ show: true, message: 'Ticket updated successfully', variant: 'success' });
-    }
-  };
-
-  const handleDeleteTicket = async () => {
-    const { error } = await supabase
-      .from('ticket_main')
-      .delete()
-      .eq('ticket_number', selectedTicket.value);
-
-    if (error) {
-      setAlert({ show: true, message: 'Error deleting ticket', variant: 'danger' });
-    } else {
-      setAlert({ show: true, message: 'Ticket deleted successfully', variant: 'success' });
-      setSelectedTicket(null);
+      setSelectedTicket(null); // Reset selected ticket after deletion
+      setImageFiles([]);
       setUpdateData({
         company_branch: '',
         description: '',
         serial_number: '',
         priority: 'Low',
-        engineer: '', 
+        engineer: '',
         paused: false,
         completed: false,
+        image_urls: [],
       });
+    } catch (error) {
+      setAlert({
+        show: true,
+        message: `Error deleting ticket: ${error.message}`,
+        variant: 'danger',
+      });
+      console.error('Error deleting ticket:', error);
     }
+
+    setIsLoading(false);
   };
+  
 
   return (
     <div className="update-ticket-form">
-      <img src={companyLogo} alt="Company Logo" className="company-logo-UpdateEngineerForm" />
-      <h2 className="text-center mb-4">Update Ticket</h2>
-      {alert.show && (
-        <Alert
-          variant={alert.variant}
-          className="alert-dismissible"
-          onClose={() => setAlert({ ...alert, show: false })}
-          dismissible
-        >
-          {alert.message}
-        </Alert>
-      )}
-      <Form onSubmit={handleUpdateSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Search Ticket</Form.Label>
+      <img src={companyLogo} alt="Company Logo" className="company-logo-UpdateTicketForm" />
+      <h2>Update Ticket</h2>
+      {alert.show && <Alert variant={alert.variant}>{alert.message}</Alert>}
+      <Form onSubmit={handleSubmit}>
+        <Form.Group  className="mb-3" controlId="ticketSelect">
+          <Form.Label className="updateform-headings">Select Ticket</Form.Label>
           <Select
             options={ticketOptions}
             value={selectedTicket}
-            onChange={setSelectedTicket}
-            placeholder="Select a ticket..."
+            onChange={(option) => setSelectedTicket(option)}
+            placeholder="Select a ticket"
           />
         </Form.Group>
 
         {selectedTicket && (
           <>
-            <Form.Group className="mb-3">
-              <Form.Label>Company Branch</Form.Label>
+            <Form.Group className="mb-3" controlId="company_branch">
+              <Form.Label className="updateform-headings">Company Branch</Form.Label>
               <Form.Control
                 type="text"
                 name="company_branch"
                 value={updateData.company_branch}
                 onChange={handleUpdateChange}
-                required
               />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Description</Form.Label>
+            <Form.Group  className="mb-3" controlId="description">
+              <Form.Label className="updateform-headings">Description</Form.Label>
               <Form.Control
                 as="textarea"
-                rows={3}
                 name="description"
+                rows={3}
                 value={updateData.description}
                 onChange={handleUpdateChange}
-                required
               />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Serial Number</Form.Label>
+            <Form.Group  className="mb-3" controlId="serial_number">
+              <Form.Label className="updateform-headings">Serial Number</Form.Label>
               <Form.Control
                 type="text"
                 name="serial_number"
                 value={updateData.serial_number}
                 onChange={handleUpdateChange}
-                required
               />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Priority</Form.Label>
-              <Form.Select
+            <Form.Group className="mb-3" controlId="priority">
+              <Form.Label className="updateform-headings">Priority</Form.Label>
+              <Form.Control
+                as="select"
                 name="priority"
                 value={updateData.priority}
                 onChange={handleUpdateChange}
               >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </Form.Select>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+              </Form.Control>
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Engineer Assigned</Form.Label>
+            <Form.Group className="form-group toggle-group">
+              <Form.Label className="updateform-headings me-3">Paused</Form.Label>
+              <div
+                className={`toggle-switch ${updateData.paused ? 'active' : ''}`}
+                onClick={() => setUpdateData({ ...updateData, paused: !updateData.paused })}
+              >
+                <div className="slider"></div>
+              </div>
+              <Form.Label className="updateform-headings">Completed</Form.Label>
+              <div
+                className={`toggle-switch ${updateData.completed ? 'active' : ''}`}
+                onClick={() => setUpdateData({ ...updateData, completed: !updateData.completed })}
+              >
+                <div className="slider"></div>
+              </div>
+            </Form.Group>
+
+
+            <Form.Group className="mb-3" controlId="engineer">
+              <Form.Label className="updateform-headings">Engineer</Form.Label>
               <Form.Control
                 type="text"
                 name="engineer"
                 value={updateData.engineer}
-                onChange={handleUpdateChange} 
+                onChange={handleUpdateChange}
               />
             </Form.Group>
 
-            <Form.Group className="form-group toggle-group">
-              <Form.Label className="me-3">Paused</Form.Label>
-              <div
-                className={`toggle-switch ${updateData.paused ? 'active' : ''}`}
-                onClick={handleTogglePaused}
-              >
-                <div className={`slider ${updateData.paused ? 'active' : ''}`}></div>
+            <Form.Group className="mb-3" controlId="fileUpload">
+              <Form.Label className="updateform-headings">Upload Images</Form.Label>
+              <Form.Control type="file" multiple onChange={handleFileChange} />
+              <div className="selected-images-grid">
+                {imageFiles.map((file, index) => (
+                  <div className="image-container" key={index}>
+                    <span className="remove-image" onClick={() => handleRemoveFile(file.name)}>×</span>
+                    <img src={URL.createObjectURL(file)} alt={`Selected file ${index + 1}`} className="selected-image" />
+                  </div>
+                ))}
               </div>
             </Form.Group>
 
-            <Form.Group className="form-group toggle-group">
-              <Form.Label className="me-3">Completed</Form.Label>
-              <div
-                className={`toggle-switch ${updateData.completed ? 'active' : ''}`}
-                onClick={handleToggleCompleted}
-              >
-                <div className={`slider ${updateData.completed ? 'active' : ''}`}></div>
+            <Form.Group className="mb-3" controlId="existingImages">
+              <Form.Label className="updateform-headings">Ticket Related Images</Form.Label>
+              <div className="existing-images-grid">
+                {updateData.image_urls.map((url, index) => (
+                  <div className="image-container" key={index}>
+                    <span className="remove-image" onClick={() => handleRemoveImage(index)}>×</span>
+                    <img src={url} alt={`Existing image ${index + 1}`} className="existing-image" />
+                  </div>
+                ))}
               </div>
             </Form.Group>
 
             <div className="form-actions">
-              <Button className="save-btn" type="submit">
-                Save Changes
+              <Button
+                type="submit"
+                className="save-btn"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Saving...' : 'Save Changes'}
               </Button>
-              <Button className="delete-btn" onClick={handleDeleteTicket}>
-                Delete Ticket
+              <Button
+                type="button"
+                className="delete-btn"
+                onClick={handleDeleteTicket}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Deleting...' : 'Delete Ticket'}
               </Button>
             </div>
           </>

@@ -120,3 +120,101 @@
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 600;
 }
+
+/* Mobile view styles for screens up to 768px */
+@media (max-width: 768px) {
+  .update-engineer-form {
+    padding: 10px;
+  }
+
+  .update-engineer-form h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  .update-engineer-form .form-group {
+    margin-bottom: 10px; 
+  }
+
+  .update-engineer-form .form-control,
+  .update-engineer-form .form-select {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .update-engineer-form .toggle-switch {
+    width: 40px; 
+    height: 20px; 
+  }
+
+  .update-engineer-form .toggle-switch .slider {
+    width: 16px; 
+    height: 16px; 
+    top: 2px; 
+    left: 2px; 
+  }
+
+  .update-engineer-form .toggle-switch.active .slider {
+    transform: translateX(20px); 
+  }
+
+  .update-engineer-form .btn {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+
+  .company-logo-EngineerForm {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+/* Small screen styles for screens up to 480px */
+@media (max-width: 480px) {
+  .update-engineer-form {
+    padding: 8px;
+  }
+
+  .update-engineer-form h2 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .update-engineer-form .form-group {
+    margin-bottom: 8px; 
+  }
+
+  .update-engineer-form .form-control,
+  .update-engineer-form .form-select {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+
+  .update-engineer-form .toggle-switch {
+    width: 35px; 
+    height: 18px; 
+  }
+
+  .update-engineer-form .toggle-switch .slider {
+    width: 14px; 
+    height: 14px; 
+    top: 2px; 
+    left: 2px; 
+  }
+
+  .update-engineer-form .toggle-switch.active .slider {
+    transform: translateX(15px); 
+  }
+
+  .update-engineer-form .btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  .company-logo-EngineerForm {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 8px;
+  }
+}
