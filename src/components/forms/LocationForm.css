@@ -1,7 +1,7 @@
 /* Base styles */
 .location-form-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between; 
   align-items: stretch;
   height: 90vh;
   padding: 20px;
@@ -11,15 +11,15 @@
 .chart-container {
   flex: 1;
   margin: 0;
-  height: 100%;
+  height: auto; 
   display: flex;
   justify-content: center;
   align-items: center;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
+  overflow: auto; 
 }
 
 .form-container {
@@ -102,7 +102,7 @@
 /* Mobile view (max-width: 768px) */
 @media (max-width: 768px) {
   .location-form-container {
-    flex-direction: column; /* Stack the containers vertically */
+    flex-direction: column; 
     padding: 10px;
   }
   
@@ -110,7 +110,11 @@
   .chart-container {
     width: 100%;
     margin-bottom: 20px;
-    height: auto;
+    height: auto; 
+  }
+
+  .chart-container {
+    overflow: auto; 
   }
 
   .location-form {
@@ -135,7 +139,6 @@
   }
 }
 
-
 /* Smaller screens (max-width: 480px) */
 @media (max-width: 480px) {
   .location-form-container {
@@ -146,7 +149,12 @@
   .chart-container {
     width: 100%;
     margin-bottom: 15px;
-    height: auto;
+    height: auto; 
+    flex: none; 
+  }
+
+  .chart-container {
+    overflow: auto; 
   }
 
   .location-form {

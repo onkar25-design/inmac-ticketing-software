@@ -341,7 +341,9 @@ body {
   }
 
   .edit-engineer-btn,
-  .new-engineer-btn {
+  .new-engineer-btn,
+  .add-ticket-btn,
+  .edit-ticket-btn {
     padding: 8px 16px;
     font-size: 14px;
   }
@@ -404,7 +406,9 @@ body {
   }
 
   .edit-engineer-btn,
-  .new-engineer-btn {
+  .new-engineer-btn,
+  .add-ticket-btn,
+  .edit-ticket-btn {
     padding: 6px 12px;
     font-size: 12px;
   }

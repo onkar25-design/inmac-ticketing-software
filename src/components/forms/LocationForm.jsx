@@ -136,143 +136,141 @@ const AddLocationForm = () => {
 
   return (
     <Container fluid className="location-form-container">
-      <Row className="w-100 h-100">
-        <Col xs={12} md={6} className="chart-container">
-          {chartData && <Bar data={chartData} options={{
-            indexAxis: 'y', 
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                beginAtZero: true,
-              },
+      <Col xs={12} md={6} className="chart-container">
+        {chartData && <Bar data={chartData} options={{
+          indexAxis: 'y', 
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              beginAtZero: true,
             },
-          }} />}
-        </Col>
-        <Col xs={12} md={6} className="form-container">
-          <Form className="location-form" onSubmit={handleSubmit}>
-            <h2 className="text-center mb-4">Add Location</h2>
-            {alert.message && (
-              <Alert variant={alert.variant} className="text-center mb-4" dismissible onClose={() => setAlert({ ...alert, message: '' })}>
-                {alert.message}
-              </Alert>
-            )}
-            <Form.Group className="mb-3">
-              <Form.Label className="location-form-headings">Company Name*</Form.Label>
-              <Form.Control
-                type="text"
-                name="companyName"
-                placeholder="Company Name"
-                value={formData.companyName}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Row>
-              <Col xs={12} md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="location-form-headings">Branch Location*</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="branchLocation"
-                    placeholder="Branch Location"
-                    value={formData.branchLocation}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-              <Col xs={12} md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="location-form-headings">City*</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="city"
-                    placeholder="Enter city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Form.Group className="mb-3">
-              <Form.Label className="location-form-headings">Contact Person Name*</Form.Label>
-              <Form.Control
-                type="text"
-                name="contactPersonName"
-                placeholder="Contact Person Name"
-                value={formData.contactPersonName}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Row>
-              <Col xs={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="location-form-headings">Contact Number*</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="contactNumber"
-                    placeholder="Enter contact number"
-                    value={formData.contactNumber}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-              <Col xs={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="location-form-headings">Pincode*</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="pincode"
-                    placeholder="Enter pincode"
-                    value={formData.pincode}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Form.Group className="mb-3">
-              <Form.Label className="location-form-headings">Email ID*</Form.Label>
-              <Form.Control
-                type="email"
-                name="emailId"
-                placeholder="Enter email ID"
-                value={formData.emailId}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label className="location-form-headings">Address*</Form.Label>
-              <Form.Control
-                as="textarea"
-                name="address"
-                rows={3}
-                placeholder="Enter address"
-                value={formData.address}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <div className="text-center">
-              <Button variant="danger" type="submit" className="me-2">
-                Submit
-              </Button>
-              <Button
-                variant="warning"
-                type="button"
-                onClick={() => setShowModal(true)}
-              >
-                Update
-              </Button>
-            </div>
-          </Form>
-        </Col>
-      </Row>
+          },
+        }} />}
+      </Col>
+      <Col xs={12} md={6} className="form-container">
+        <Form className="location-form" onSubmit={handleSubmit}>
+          <h2 className="text-center mb-4">Add Location</h2>
+          {alert.message && (
+            <Alert variant={alert.variant} className="text-center mb-4" dismissible onClose={() => setAlert({ ...alert, message: '' })}>
+              {alert.message}
+            </Alert>
+          )}
+          <Form.Group className="mb-3">
+            <Form.Label className="location-form-headings">Company Name*</Form.Label>
+            <Form.Control
+              type="text"
+              name="companyName"
+              placeholder="Company Name"
+              value={formData.companyName}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+          <Row>
+            <Col xs={12} md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label className="location-form-headings">Branch Location*</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="branchLocation"
+                  placeholder="Branch Location"
+                  value={formData.branchLocation}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={12} md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label className="location-form-headings">City*</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="city"
+                  placeholder="Enter city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Form.Group className="mb-3">
+            <Form.Label className="location-form-headings">Contact Person Name*</Form.Label>
+            <Form.Control
+              type="text"
+              name="contactPersonName"
+              placeholder="Contact Person Name"
+              value={formData.contactPersonName}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+          <Row>
+            <Col xs={6}>
+              <Form.Group className="mb-3">
+                <Form.Label className="location-form-headings">Contact Number*</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="contactNumber"
+                  placeholder="Enter contact number"
+                  value={formData.contactNumber}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={6}>
+              <Form.Group className="mb-3">
+                <Form.Label className="location-form-headings">Pincode*</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="pincode"
+                  placeholder="Enter pincode"
+                  value={formData.pincode}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Form.Group className="mb-3">
+            <Form.Label className="location-form-headings">Email ID*</Form.Label>
+            <Form.Control
+              type="email"
+              name="emailId"
+              placeholder="Enter email ID"
+              value={formData.emailId}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label className="location-form-headings">Address*</Form.Label>
+            <Form.Control
+              as="textarea"
+              name="address"
+              rows={3}
+              placeholder="Enter address"
+              value={formData.address}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+          <div className="text-center">
+            <Button variant="danger" type="submit" className="me-2">
+              Submit
+            </Button>
+            <Button
+              variant="warning"
+              type="button"
+              onClick={() => setShowModal(true)}
+            >
+              Update
+            </Button>
+          </div>
+        </Form>
+      </Col>
 
       <EngineerModal show={showModal} onClose={() => setShowModal(false)}>
         <UpdateLocationForm />
