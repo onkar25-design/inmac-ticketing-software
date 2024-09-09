@@ -302,6 +302,10 @@ body {
     max-height: 150px;
   }
 
+  .right-side {
+    order: -1; 
+  }
+
   .left-side,
   .right-side {
     flex: 1;
@@ -317,6 +321,9 @@ body {
   .contact-info-box,
   .chart-container-contact {
     padding: 10px;
+  }
+  .chart-container-contact{
+    margin-bottom: 15px;
   }
 
   .timeline-section h3,
@@ -375,6 +382,14 @@ body {
   .left-side,
   .right-side {
     flex: 1;
+  }
+
+  .right-side {
+    order: -1; 
+  }
+
+  .chart-container-contact{
+    margin-bottom: 15px;
   }
 
   .profile-section,
