@@ -24,7 +24,9 @@ const Navbar = ({ onLogout }) => {
       </button>
 
       <div className={`navbar-links ${isMenuOpen ? 'show' : ''}`}>
-        <button className="dropbtn">Tickets</button>
+       <Link to="/support-page"> 
+          <button className="dropbtn">Tickets</button>
+        </Link>
         <Link to="/location-form"> 
           <button className="dropbtn">Location</button>
         </Link>
