@@ -9,6 +9,7 @@ import EngineerForm from './components/forms/EngineerForm';
 import LocationForm from './components/forms/LocationForm';
 import ContactPage from './components/forms/ContactPage'; 
 import SupportPage from './components/support-ticket/SupportPage';
+import CallReports from './components/forms/CallReports'; // Import CallReports
 import LoginPage from './LoginPage'; // Import LoginPage
 
 function App() {
@@ -50,7 +51,8 @@ function App() {
               <Route path="/engineer-form" element={<EngineerForm />} /> 
               <Route path="/location-form" element={<LocationForm />} />
               <Route path="/contacts" element={<ContactPage />} /> 
-              <Route path="/support-page" element={<SupportPage />} /> 
+              <Route path="/support-page" element={<SupportPage />} />
+              <Route path="/call-reports" element={<CallReports />} /> {/* New route for Call Reports */}
             </Routes>
           </div>
         </>

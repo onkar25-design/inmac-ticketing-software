@@ -24,14 +24,17 @@ const Navbar = ({ onLogout }) => {
       </button>
 
       <div className={`navbar-links ${isMenuOpen ? 'show' : ''}`}>
-       <Link to="/support-page"> 
+        <Link to="/support-page"> 
           <button className="dropbtn">Tickets</button>
         </Link>
         <Link to="/location-form"> 
-          <button className="dropbtn">Location</button>
+          <button className="dropbtn">Locations</button>
         </Link>
         <Link to="/contacts">
-          <button className="dropbtn">Engineer</button>
+          <button className="dropbtn">Engineers</button>
+        </Link>
+        <Link to="/call-reports"> 
+          <button className="dropbtn">Reports</button> {/* New link */}
         </Link>
         <button>Help</button>
       </div>
