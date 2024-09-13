@@ -34,6 +34,7 @@
 
 .tickets-section-ticketsupport {
   margin-top: 30px;
+  overflow-x: auto; /* Enable horizontal scrolling */
 }
 
 .ticket-card-ticketsupport {
@@ -41,6 +42,7 @@
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   margin-top: 30px;
+  min-width: 300px; /* Ensure cards are wide enough to scroll */
 }
 
 .ticket-header-ticketsupport {
@@ -51,11 +53,16 @@
   margin-top: 10px;
 }
 
+.ticketsupport-table-wrapper {
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+
 .ticketsupport-table {
   border-collapse: separate;
   border-spacing: 0;
   border: 1px solid #dcdcdc;
   margin-top: 30px;
+  min-width: 600px; /* Ensure table is wide enough to scroll */
 }
 
 .ticketsupport-table thead th {
@@ -129,11 +136,15 @@
 
   .ticket-card-ticketsupport {
     margin-bottom: 15px;
+    min-width: 250px; /* Adjust for smaller screens */
+  }
+
+  .ticketsupport-table-wrapper {
+    width: 100%;
   }
 
   .ticketsupport-table {
-    width: 100%;
-    overflow-x: auto;
+    font-size: 0.875rem;
   }
 
   .ticketsupport-table thead th {
@@ -165,6 +176,11 @@
 
   .ticket-card-ticketsupport {
     font-size: 0.875rem;
+    min-width: 200px; /* Adjust for very small screens */
+  }
+
+  .ticketsupport-table-wrapper {
+    width: 100%;
   }
 
   .ticketsupport-table thead th, 
@@ -173,6 +189,6 @@
   }
 
   .btn-primary, .btn-secondary, .btn-danger {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 }
