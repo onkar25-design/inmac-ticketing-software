@@ -1,4 +1,4 @@
-/* General Styles */
+
 .support-page-ticketsupport { 
   display: flex;
   flex-direction: column;
@@ -34,7 +34,7 @@
 
 .tickets-section-ticketsupport {
   margin-top: 30px;
-  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-x: auto; 
 }
 
 .ticket-card-ticketsupport {
@@ -42,7 +42,7 @@
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   margin-top: 30px;
-  min-width: 300px; /* Ensure cards are wide enough to scroll */
+  min-width: 300px; 
 }
 
 .ticket-header-ticketsupport {
@@ -54,7 +54,7 @@
 }
 
 .ticketsupport-table-wrapper {
-  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-x: auto; 
 }
 
 .ticketsupport-table {
@@ -62,7 +62,7 @@
   border-spacing: 0;
   border: 1px solid #dcdcdc;
   margin-top: 30px;
-  min-width: 600px; /* Ensure table is wide enough to scroll */
+  min-width: 800px; 
 }
 
 .ticketsupport-table thead th {
@@ -115,7 +115,44 @@
   border-color: #bd2130; 
 }
 
-/* Responsive Styles */
+
+.ticket-high-priority {
+  border-left: 6px solid red !important; 
+  border-top: 2px solid red !important;
+  border-right: 2px solid red !important;
+  border-bottom: 2px solid red !important;
+}
+
+.ticket-medium-priority {
+  border-left: 6px solid orange !important; 
+  border-top: 2px solid orange !important;
+  border-right: 2px solid orange !important;
+  border-bottom: 2px solid orange !important;
+}
+
+.ticket-low-priority {
+  border-left: 6px solid green !important; 
+  border-top: 2px solid green !important;
+  border-right: 2px solid green !important;
+  border-bottom: 2px solid green !important;
+}
+
+.ticket-default-priority {
+  border-left: 6px solid gray !important; 
+  border-top: 2px solid gray !important;
+  border-right: 2px solid gray !important;
+  border-bottom: 2px solid gray !important;
+}
+
+
+
+
+.ticket-actions-container-ticketsupport {
+  display: flex; 
+  gap: 0.5rem; 
+  align-items: center; 
+}
+
 @media (max-width: 768px) {
   .support-header-ticketsupport {
     flex-direction: column;
@@ -136,7 +173,7 @@
 
   .ticket-card-ticketsupport {
     margin-bottom: 15px;
-    min-width: 250px; /* Adjust for smaller screens */
+    min-width: 250px; 
   }
 
   .ticketsupport-table-wrapper {
@@ -176,7 +213,7 @@
 
   .ticket-card-ticketsupport {
     font-size: 0.875rem;
-    min-width: 200px; /* Adjust for very small screens */
+    min-width: 200px; 
   }
 
   .ticketsupport-table-wrapper {

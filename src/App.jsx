@@ -9,14 +9,15 @@ import EngineerForm from './components/forms/EngineerForm';
 import LocationForm from './components/forms/LocationForm';
 import ContactPage from './components/forms/ContactPage'; 
 import SupportPage from './components/support-ticket/SupportPage';
-import CallReports from './components/forms/CallReports'; // Import CallReports
-import LoginPage from './LoginPage'; // Import LoginPage
+import CallReports from './components/forms/CallReports'; 
+import LoginPage from './LoginPage'; 
+import Help from './components/help/Help';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if the user is already logged in by checking localStorage
+   
     const loggedInStatus = localStorage.getItem('isLoggedIn');
     if (loggedInStatus === 'true') {
       setIsLoggedIn(true);
@@ -52,7 +53,8 @@ function App() {
               <Route path="/location-form" element={<LocationForm />} />
               <Route path="/contacts" element={<ContactPage />} /> 
               <Route path="/support-page" element={<SupportPage />} />
-              <Route path="/call-reports" element={<CallReports />} /> {/* New route for Call Reports */}
+              <Route path="/call-reports" element={<CallReports />} /> 
+              <Route path="/help" element={<Help />} /> 
             </Routes>
           </div>
         </>

@@ -36,7 +36,9 @@ const Navbar = ({ onLogout }) => {
         <Link to="/call-reports"> 
           <button className="dropbtn">Reports</button> {/* New link */}
         </Link>
-        <button>Help</button>
+        <Link to="/help">
+          <button className="dropbtn">Help</button> {/* New link */}
+        </Link>
       </div>
 
       <div className={`navbar-profile ${isMenuOpen ? 'show' : ''}`}>
