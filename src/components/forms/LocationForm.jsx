@@ -32,9 +32,13 @@ const AddLocationForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const formattedValue = name === 'branchLocation' || name === 'city' || name === 'contactPersonName'
+      ? capitalizeFirstLetter(value)
+      : value;
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: formattedValue,
     }));
   };
 
@@ -90,7 +94,6 @@ const AddLocationForm = () => {
         address: ''
       });
 
-     
       fetchChartData();
     }
   };
@@ -105,7 +108,6 @@ const AddLocationForm = () => {
       return;
     }
 
-   
     const cityCounts = data.reduce((acc, { city }) => {
       acc[city] = (acc[city] || 0) + 1;
       return acc;

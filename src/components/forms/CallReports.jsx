@@ -7,10 +7,10 @@ import { FaDownload } from 'react-icons/fa';
 const CallReports = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [completedStatus, setCompletedStatus] = useState('');
-  const [engineer, setEngineer] = useState('');
-  const [location, setLocation] = useState('');
-  const [priority, setPriority] = useState('');
+  const [completedStatus, setCompletedStatus] = useState([]);
+  const [engineer, setEngineer] = useState([]);
+  const [location, setLocation] = useState([]);
+  const [priority, setPriority] = useState([]);
   const [data, setData] = useState([]);
   const [engineers, setEngineers] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -37,7 +37,7 @@ const CallReports = () => {
 
         setEngineers([{ value: '', label: 'All' }, ...[...engineersSet].map(eng => ({ value: eng, label: eng }))]);
         setLocations([{ value: '', label: 'All' }, ...[...locationsSet].map(loc => ({ value: loc, label: loc }))]);
-        setPriorities([...prioritiesSet].map(prio => ({ value: prio, label: prio })));
+        setPriorities([{ value: '', label: 'All' }, ...[...prioritiesSet].map(prio => ({ value: prio, label: prio }))]);
       } catch (error) {
         console.error('Error fetching form data:', error);
       }
@@ -65,20 +65,28 @@ const CallReports = () => {
 
         let filteredData = fetchedData;
 
-        if (completedStatus) {
+        // Filter by completed status
+        if (completedStatus.length > 0) {
           filteredData = filteredData.filter(ticket => {
-            if (completedStatus === 'Completed') return ticket.completed === true;
-            if (completedStatus === 'Not Completed') return ticket.completed === false;
-            if (completedStatus === 'Paused') return ticket.paused === true;
-            return true;
+            const statusMatch = [];
+            if (completedStatus.includes('Completed')) statusMatch.push(ticket.completed === true);
+            if (completedStatus.includes('Not Completed')) statusMatch.push(ticket.completed === false);
+            if (completedStatus.includes('Paused')) statusMatch.push(ticket.paused === true);
+            return statusMatch.includes(true);
           });
         }
 
-        if (engineer) filteredData = filteredData.filter(ticket => engineer === '' || ticket.engineer === engineer);
-        if (location) filteredData = filteredData.filter(ticket => location === '' || ticket.company_branch === location);
-        if (priority) filteredData = filteredData.filter(ticket => ticket.priority === priority);
+        // Filter by engineer, location, and priority
+        if (engineer.length > 0) {
+          filteredData = filteredData.filter(ticket => engineer.includes(ticket.engineer));
+        }
+        if (location.length > 0) {
+          filteredData = filteredData.filter(ticket => location.includes(ticket.company_branch));
+        }
+        if (priority.length > 0) {
+          filteredData = filteredData.filter(ticket => priority.includes(ticket.priority));
+        }
 
-        
         filteredData = filteredData.sort((a, b) => b.ticket_number.localeCompare(a.ticket_number));
 
         setData(filteredData);
@@ -139,13 +147,13 @@ const CallReports = () => {
             <label>Completed Status:</label>
             <Select
               options={[
-                { value: '', label: 'All' },
                 { value: 'Completed', label: 'Completed' },
                 { value: 'Not Completed', label: 'Not Completed' },
                 { value: 'Paused', label: 'Paused' }
               ]}
-              value={{ value: completedStatus, label: completedStatus || 'All' }}
-              onChange={(selectedOption) => setCompletedStatus(selectedOption ? selectedOption.value : '')}
+              isMulti
+              value={completedStatus.map(status => ({ value: status, label: status }))}
+              onChange={(selectedOptions) => setCompletedStatus(selectedOptions.map(option => option.value))}
               placeholder="Select Status"
             />
           </div>
@@ -153,8 +161,9 @@ const CallReports = () => {
             <label>Engineer:</label>
             <Select
               options={engineers}
-              value={engineers.find(eng => eng.value === engineer)}
-              onChange={(selectedOption) => setEngineer(selectedOption ? selectedOption.value : '')}
+              isMulti
+              value={engineers.filter(eng => engineer.includes(eng.value))}
+              onChange={(selectedOptions) => setEngineer(selectedOptions.map(option => option.value))}
               placeholder="Select Engineer"
             />
           </div>
@@ -162,17 +171,19 @@ const CallReports = () => {
             <label>Location:</label>
             <Select
               options={locations}
-              value={locations.find(loc => loc.value === location)}
-              onChange={(selectedOption) => setLocation(selectedOption ? selectedOption.value : '')}
+              isMulti
+              value={locations.filter(loc => location.includes(loc.value))}
+              onChange={(selectedOptions) => setLocation(selectedOptions.map(option => option.value))}
               placeholder="Select Location"
             />
           </div>
           <div className="form-group-reports">
             <label>Priority:</label>
             <Select
-              options={[{ value: '', label: 'All' }, ...priorities]}
-              value={priorities.find(prio => prio.value === priority)}
-              onChange={(selectedOption) => setPriority(selectedOption ? selectedOption.value : '')}
+              options={priorities}
+              isMulti
+              value={priorities.filter(prio => priority.includes(prio.value))}
+              onChange={(selectedOptions) => setPriority(selectedOptions.map(option => option.value))}
               placeholder="Select Priority"
             />
           </div>

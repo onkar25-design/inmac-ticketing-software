@@ -30,9 +30,12 @@ const UpdateEngineerForm = ({ engineer, onSave, onClose }) => {
 
   const handleUpdateChange = (e) => {
     const { name, value, type, checked } = e.target;
+    const capitalizedValue = name === 'name' || name === 'location' 
+      ? value.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+      : value;
     setUpdateData({
       ...updateData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? checked : capitalizedValue,
     });
   };
 

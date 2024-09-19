@@ -21,19 +21,16 @@ const EngineerForm = () => {
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    const capitalizedValue = name === 'name' || name === 'location' 
+      ? value.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+      : value;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: capitalizedValue
     });
   };
 
-  
-  const isValidEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-  };
-
-  
   const isValidPhoneNumber = (phone) => {
     const re = /^[0-9]{10}$/; 
     return re.test(phone);
@@ -43,14 +40,8 @@ const EngineerForm = () => {
     e.preventDefault();
     setIsLoading(true); 
 
-    if (!formData.name || !formData.phone_number || !formData.email || !formData.location) {
+    if (!formData.name || !formData.phone_number || !formData.location) {
       setAlert({ show: true, message: 'Please fill out all required fields', variant: 'danger' });
-      setIsLoading(false); 
-      return;
-    }
-
-    if (!isValidEmail(formData.email)) {
-      setAlert({ show: true, message: 'Please enter a valid email address', variant: 'danger' });
       setIsLoading(false); 
       return;
     }
@@ -63,16 +54,14 @@ const EngineerForm = () => {
 
     const { data, error } = await supabase
       .from('engineers')
-      .insert([
-        {
-          name: formData.name,
-          phone_number: formData.phone_number,
-          email: formData.email,
-          is_field_engineer: isFieldEngineer,
-          location: formData.location,
-          domain: formData.domain
-        }
-      ]);
+      .insert([{
+        name: formData.name,
+        phone_number: formData.phone_number,
+        email: formData.email,
+        is_field_engineer: isFieldEngineer,
+        location: formData.location,
+        domain: formData.domain
+      }]);
 
     if (error) {
       setAlert({ show: true, message: 'Error inserting data', variant: 'danger' });

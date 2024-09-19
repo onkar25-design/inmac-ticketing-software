@@ -5,6 +5,10 @@ import Select from 'react-select';
 import { supabase } from '../../supabaseClient';
 import companyLogo from './company-logo.png'; 
 
+const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+};
+
 const UpdateLocationForm = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -36,10 +40,10 @@ const UpdateLocationForm = () => {
     setSelectedLocation(selectedOption);
     if (selectedOption) {
       setFormData({
-        companyName: selectedOption.company_name || '',
-        branchLocation: selectedOption.branch_location || '',
-        city: selectedOption.city || '',
-        contactPersonName: selectedOption.contact_person_name || '',
+        companyName: capitalizeFirstLetter(selectedOption.company_name || ''),
+        branchLocation: capitalizeFirstLetter(selectedOption.branch_location || ''),
+        city: capitalizeFirstLetter(selectedOption.city || ''),
+        contactPersonName: capitalizeFirstLetter(selectedOption.contact_person_name || ''),
         contactNumber: selectedOption.contact_number || '',
         pincode: selectedOption.pincode || '',
         emailId: selectedOption.email_id || '',
@@ -60,9 +64,14 @@ const UpdateLocationForm = () => {
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    const formattedValue = name === 'branchLocation' || name === 'city' || name === 'contactPersonName'
+      ? capitalizeFirstLetter(value)
+      : value;
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: formattedValue
     });
   };
 
@@ -146,7 +155,6 @@ const UpdateLocationForm = () => {
     }
   };
 
-  
   const options = locations.map((loc) => ({
     value: loc.id,
     label: `${loc.company_name} - ${loc.branch_location}`,

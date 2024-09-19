@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FaTrash, FaEnvelopeOpen, FaEnvelope } from 'react-icons/fa'; 
+import { FaTrash, FaEnvelopeOpen, FaEnvelope, FaEdit } from 'react-icons/fa';
 import Select from 'react-select';
 import './SupportPage.css';
 import { supabase } from '../../supabaseClient';
+import EngineerModal from '../forms/AddEngineerModal';
+import UpdateTicket from './UpdateTicket'; 
 
 const Support = () => {
   const [tickets, setTickets] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [deletedTickets, setDeletedTickets] = useState(new Set());
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const savedDeletedTickets = JSON.parse(localStorage.getItem('deletedTickets')) || [];
     setDeletedTickets(new Set(savedDeletedTickets));
-
     fetchTickets();
   }, []);
 
@@ -29,7 +32,7 @@ const Support = () => {
     } else {
       setTickets(data.map(ticket => ({
         ...ticket,
-        isRead: ticket.is_read 
+        isRead: ticket.is_read,
       })));
     }
   };
@@ -38,7 +41,7 @@ const Support = () => {
     .filter(ticket => !deletedTickets.has(ticket.id))
     .map(ticket => ({
       value: ticket.id,
-      label: `${ticket.engineer} - ${ticket.ticket_number}`
+      label: `${ticket.engineer} - ${ticket.ticket_number}`,
     }));
 
   const handleSearchChange = (selectedOption) => {
@@ -99,6 +102,12 @@ const Support = () => {
     }
   };
 
+  const handleEdit = (ticketId) => {
+    const ticketToEdit = tickets.find(ticket => ticket.id === ticketId);
+    setSelectedTicket(ticketToEdit);
+    setShowModal(true);
+  };
+
   const filteredTickets = tickets.filter(ticket => 
     !deletedTickets.has(ticket.id) && (
       ticket.engineer?.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -127,8 +136,7 @@ const Support = () => {
         </div>
         <div className="badge">{unreadTickets.length} Open Support Tickets</div>
       </header>
-  
-     
+
       <div className="tickets-section-ticketsupport">
         <h5 className="card-text-heading">Open Tickets</h5>
         {unreadTickets.length > 0 ? (
@@ -150,7 +158,7 @@ const Support = () => {
                   <h5 className="card-title">{ticket.engineer}</h5>
                   <h6 className="card-subtitle text-muted">Ticket #{ticket.ticket_number}</h6>
                 </div>
-                <p className="card-text"><strong>Company-Branch:</strong> {ticket.company_branch} </p>
+                <p className="card-text"><strong>Company-Branch:</strong> {ticket.company_branch}</p>
                 <p className="card-text"><strong>Description:</strong> {ticket.description}</p>
                 <p className="card-text"><strong>Ticket Issue:</strong> {ticket.note}</p>
                 <p className="card-text"><strong>Priority:</strong> {ticket.note_priority}</p>
@@ -160,6 +168,12 @@ const Support = () => {
                     onClick={() => markAsRead(ticket.id)}
                   >
                     <FaEnvelopeOpen /> 
+                  </button>
+                  <button 
+                    className="btn btn-sm btn-warning me-2" 
+                    onClick={() => handleEdit(ticket.id)}
+                  >
+                    <FaEdit /> 
                   </button>
                   <button 
                     className="btn btn-sm btn-danger delete-ticket-ticketsupport" 
@@ -175,8 +189,7 @@ const Support = () => {
           <p>No unread tickets found.</p>
         )}
       </div>
-  
-     
+
       <div className="tickets-section-ticketsupport mt-4">
         <h5 className="card-text-heading">Closed Tickets</h5>
         {readTickets.length > 0 ? (
@@ -225,9 +238,14 @@ const Support = () => {
           <p>No closed tickets found.</p>
         )}
       </div>
+
+      {selectedTicket && (
+        <EngineerModal show={showModal} onClose={() => setShowModal(false)}>
+          <UpdateTicket ticket={selectedTicket} onClose={() => setShowModal(false)} />
+        </EngineerModal>
+      )}
     </div>
   );
-  
 };
 
 export default Support;
