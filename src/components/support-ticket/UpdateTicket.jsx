@@ -59,7 +59,7 @@ const UpdateTicket = ({ ticket, onClose }) => {
       <div className="modal-content">
       <img src={companyLogo} alt="Company Logo" className="company-logo-updateticketsupport" />
         <div className="modal-header">
-          <h5 className="modal-title">Update Support Ticket</h5>
+          <h5 className="modal-title">Support Ticket Update</h5>
           <button type="button" className="btn-close" onClick={onClose}></button>
         </div>
         <form onSubmit={handleSubmit} className="uedit-support-ticket-form">

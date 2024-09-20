@@ -235,7 +235,7 @@ const Support = () => {
             </tbody>
           </table>
         ) : (
-          <p>No closed tickets found.</p>
+          <p>No closed ticket found.</p>
         )}
       </div>
 
