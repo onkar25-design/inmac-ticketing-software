@@ -59,22 +59,22 @@
   width: 100%; 
 }
 
-.download-button {
+.download-button-callreports{
   background-color: #2ab92f;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 50%;
   padding: 10px 15px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
 }
 
-.download-button:hover {
+.download-button-callreports:hover {
   background-color: #105212;
   transform: scale(1.05);
 }
 
-.download-button:active {
+.download-button-callreports:active {
   background-color: #004494;
 }
 
@@ -148,9 +148,10 @@
     width: 100%;
   }
 
-  .download-button {
+  .download-button-callreports {
     align-self: flex-start;
     margin-top: 10px;
+    
   }
 
   .table-container-reports {
@@ -197,7 +198,7 @@
     width: 100%; 
   }
 
-  .download-button {
+  .download-button-callreports {
     align-self: center; 
     margin-top: 10px; 
   }

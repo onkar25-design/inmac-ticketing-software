@@ -251,64 +251,66 @@ const CallReports = () => {
             />
           </div>
         </div>
-        <button onClick={downloadCSV} className="download-button">
+        <button className="download-button-callreports" onClick={downloadCSV}>
           <FaDownload /> 
         </button>
       </div>
-      <table className="reports-table">
-        <thead>
-          <tr>
-            {groupBy ? (
-              <>
-                <th>Filter</th>
-                <th>Count</th>
-              </>
-            ) : (
-              <>
-                <th>Ticket Number</th>
-                <th>Company Branch</th>
-                <th>Description</th>
-                <th>Serial Number</th>
-                <th>Priority</th>
-                <th>Engineer</th>
-                <th>Paused</th>
-                <th>Completed</th>
-                <th>Created At</th>
-              </>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {data.length > 0 ? (
-            data.map((ticket, index) => (
-              <tr key={index}>
-                {groupBy ? (
-                  <>
-                    <td>{ticket.key}</td>
-                    <td>{ticket.count}</td>
-                  </>
-                ) : (
-                  <>
-                    <td>{ticket.ticket_number}</td>
-                    <td>{ticket.company_branch}</td>
-                    <td>{ticket.description}</td>
-                    <td>{ticket.serial_number}</td>
-                    <td>{ticket.priority}</td>
-                    <td>{ticket.engineer}</td>
-                    <td>{ticket.paused ? 'Yes' : 'No'}</td>
-                    <td>{ticket.completed ? 'Yes' : 'No'}</td>
-                    <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
-                  </>
-                )}
-              </tr>
-            ))
-          ) : (
+      <div className="table-scroll-container">
+        <table className="reports-table">
+          <thead>
             <tr>
-              <td colSpan={groupBy ? 2 : 9}>No data available</td>
+              {groupBy ? (
+                <>
+                  <th>Filter</th>
+                  <th>Count</th>
+                </>
+              ) : (
+                <>
+                  <th>Ticket Number</th>
+                  <th>Company Branch</th>
+                  <th>Description</th>
+                  <th>Serial Number</th>
+                  <th>Priority</th>
+                  <th>Engineer</th>
+                  <th>Paused</th>
+                  <th>Completed</th>
+                  <th>Created At</th>
+                </>
+              )}
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.length > 0 ? (
+              data.map((ticket, index) => (
+                <tr key={index}>
+                  {groupBy ? (
+                    <>
+                      <td>{ticket.key}</td>
+                      <td>{ticket.count}</td>
+                    </>
+                  ) : (
+                    <>
+                      <td>{ticket.ticket_number}</td>
+                      <td>{ticket.company_branch}</td>
+                      <td>{ticket.description}</td>
+                      <td>{ticket.serial_number}</td>
+                      <td>{ticket.priority}</td>
+                      <td>{ticket.engineer}</td>
+                      <td>{ticket.paused ? 'Yes' : 'No'}</td>
+                      <td>{ticket.completed ? 'Yes' : 'No'}</td>
+                      <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
+                    </>
+                  )}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={groupBy ? 2 : 9}>No data available</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
