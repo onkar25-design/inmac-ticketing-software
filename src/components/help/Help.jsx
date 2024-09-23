@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDownIcon, ChevronUpIcon, HelpCircleIcon, BookOpenIcon, LifeBuoyIcon, MessageCircleIcon } from 'lucide-react';
+import { ChevronDownIcon, ChevronUpIcon, HelpCircleIcon, DownloadIcon } from 'lucide-react';
 import './Help.css'; 
 
 const FAQItem = ({ question, answer }) => {
@@ -34,7 +34,7 @@ const faqData = [
   },
   {
     question: "How do I create a new ticket?",
-    answer: "To create a new ticket, navigate to the 'Engineers' page from your dashboard there you will see an option to Add Tickets. Fill in the required details such as the issue description, priority, and any relevant attachments. Once you've entered all the necessary information, submit the form to create your ticket."
+    answer: "To create a new ticket, navigate to the 'Engineers' page from your dashboard. There you will see an option to Add Tickets. Fill in the required details such as the issue description, priority, and any relevant attachments. Once you've entered all the necessary information, submit the form to create your ticket."
   },
   {
     question: "How can I view assigned tickets?",
@@ -42,7 +42,7 @@ const faqData = [
   },
   {
     question: "Can I update a ticket?",
-    answer: "Yes, you can update a ticket at any time. Simply go to the 'Update Ticket' on 'Engineers' page and select the ticket you wish to modify. Make the necessary changes to the ticket details, add comments, or update the status. Once you've made your changes, submit the form to update the ticket."
+    answer: "Yes, you can update a ticket at any time. Simply go to the 'Update Ticket' on the 'Engineers' page and select the ticket you wish to modify. Make the necessary changes to the ticket details, add comments, or update the status. Once you've made your changes, submit the form to update the ticket."
   },
   {
     question: "How do I prioritize tickets?",
@@ -50,7 +50,7 @@ const faqData = [
   },
   {
     question: "Can I attach pictures to a ticket?",
-    answer: "Yes, you can attach pictures to tickets. When updating a ticket, look for the file attachment option. This feature allows you to upload screenshots, images that can help in resolving the issue more efficiently."
+    answer: "Yes, you can attach pictures to tickets. When updating a ticket, look for the file attachment option. This feature allows you to upload screenshots and images that can help in resolving the issue more efficiently."
   },
   {
     question: "How do I contact customer support?",
@@ -66,19 +66,19 @@ const faqData = [
   },
   {
     question: "What happens if an engineer is not available?",
-    answer: "If an engineer is not available, the ticket can be re-assigned to another engineer based on availability and expertise."
+    answer: "If an engineer is not available, the ticket can be reassigned to another engineer based on availability and expertise."
   },
   {
     question: "How to add new locations?",
-    answer: "To add a location you can go to locations option on nav-bar in locations page there will be options to add location fill up necessary details and location gets added also you can update the location too."
+    answer: "To add a location, you can go to the 'Locations' option on the nav-bar. On the locations page, there will be options to add a location. Fill up the necessary details, and the location gets added. You can also update the location."
   },
   {
     question: "Can I download a CSV file of tickets assigned to a particular Engineer?",
-    answer: "Yes! In Reports section you can see the filters are available, based on filtered data you can download the Csv file by simply clicking download button."
+    answer: "Yes! In the Reports section, you can see the filters are available. Based on the filtered data, you can download the CSV file by simply clicking the download button."
   },
   {
     question: "What is Ticket Support?",
-    answer: "Ticket Support is basically a page where any additional issues in an existing tickets are raised by Engineers."
+    answer: "Ticket Support is basically a page where any additional issues in existing tickets are raised by engineers."
   }
 ];
 
@@ -94,6 +94,14 @@ export default function Help() {
       </header>
 
       <h2 className="faq-title">Frequently Asked Questions</h2>
+      <a 
+          href="/NXT%20Gen%20ticketing%20software%20guide.pdf" 
+          className="download-button" 
+          download
+          title="Download guide" 
+        >
+          <DownloadIcon className="icon" />
+        </a>
       <div className="faq-list">
         {faqData.map((faq, index) => (
           <FAQItem key={index} question={faq.question} answer={faq.answer} />

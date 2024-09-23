@@ -139,7 +139,7 @@
   }
 }
 
-/* Smaller screens (max-width: 480px) */
+
 @media (max-width: 480px) {
   .location-form-container {
     padding: 5px;

@@ -49,7 +49,7 @@ const FilterForm = ({ setChartData, setHasInput }) => {
       try {
         let query = supabase.from('ticket_main').select('*');
 
-        // Apply date range filter
+        
         if (startDate) {
           query = query.gte('created_at', new Date(startDate).toISOString());
         }
@@ -62,7 +62,7 @@ const FilterForm = ({ setChartData, setHasInput }) => {
         const { data: initialData, error: initialError } = await query;
         if (initialError) throw initialError;
 
-        // Apply additional filters to the already date-filtered data
+        
         let filteredData = initialData;
 
         if (completedStatus) {

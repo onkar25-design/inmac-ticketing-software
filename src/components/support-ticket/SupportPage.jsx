@@ -163,18 +163,20 @@ const Support = () => {
                 <p className="card-text"><strong>Ticket Issue:</strong> {ticket.note}</p>
                 <p className="card-text"><strong>Priority:</strong> {ticket.note_priority}</p>
                 <div className="d-flex justify-content-between ticket-actions-ticketsupport">
-                  <button 
-                    className="btn btn-sm btn-primary me-2" 
-                    onClick={() => markAsRead(ticket.id)}
-                  >
-                    <FaEnvelopeOpen /> 
-                  </button>
-                  <button 
-                    className="btn btn-sm btn-warning me-2" 
-                    onClick={() => handleEdit(ticket.id)}
-                  >
-                    <FaEdit /> 
-                  </button>
+                  <div className="d-flex">
+                    <button 
+                      className="btn btn-sm btn-primary me-2" 
+                      onClick={() => markAsRead(ticket.id)}
+                    >
+                      <FaEnvelopeOpen /> 
+                    </button>
+                    <button 
+                      className="btn btn-sm btn-warning me-2" 
+                      onClick={() => handleEdit(ticket.id)}
+                    >
+                      <FaEdit /> 
+                    </button>
+                  </div>
                   <button 
                     className="btn btn-sm btn-danger delete-ticket-ticketsupport" 
                     onClick={() => deleteNote(ticket.id, ticket.isRead)}

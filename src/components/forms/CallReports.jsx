@@ -12,6 +12,7 @@ const CallReports = () => {
   const [location, setLocation] = useState([]);
   const [priority, setPriority] = useState([]);
   const [data, setData] = useState([]);
+  const [groupBy, setGroupBy] = useState(false); 
   const [engineers, setEngineers] = useState([]);
   const [locations, setLocations] = useState([]);
   const [priorities, setPriorities] = useState([]);
@@ -65,7 +66,7 @@ const CallReports = () => {
 
         let filteredData = fetchedData;
 
-        // Filter by completed status
+        // Completed Status filter
         if (completedStatus.length > 0) {
           filteredData = filteredData.filter(ticket => {
             const statusMatch = [];
@@ -76,18 +77,28 @@ const CallReports = () => {
           });
         }
 
-        // Filter by engineer, location, and priority
-        if (engineer.length > 0) {
+        // Engineer filter - No filtering if 'All' is selected
+        if (engineer.length > 0 && !engineer.includes('')) {
           filteredData = filteredData.filter(ticket => engineer.includes(ticket.engineer));
         }
-        if (location.length > 0) {
+
+        // Location filter - No filtering if 'All' is selected
+        if (location.length > 0 && !location.includes('')) {
           filteredData = filteredData.filter(ticket => location.includes(ticket.company_branch));
         }
-        if (priority.length > 0) {
+
+        // Priority filter - No filtering if 'All' is selected
+        if (priority.length > 0 && !priority.includes('')) {
           filteredData = filteredData.filter(ticket => priority.includes(ticket.priority));
         }
 
+        // Sort by ticket number
         filteredData = filteredData.sort((a, b) => b.ticket_number.localeCompare(a.ticket_number));
+
+        // Apply "Group By" functionality if active
+        if (groupBy) {
+          filteredData = groupByFilter(filteredData);
+        }
 
         setData(filteredData);
       } catch (error) {
@@ -96,22 +107,66 @@ const CallReports = () => {
     };
 
     fetchData();
-  }, [startDate, endDate, completedStatus, engineer, location, priority]);
+  }, [startDate, endDate, completedStatus, engineer, location, priority, groupBy]);
+
+  // Function to group data by selected filters
+  const groupByFilter = (filteredData) => {
+    const groupByCounts = {};
+  
+    filteredData.forEach(ticket => {
+      const filterKey = getGroupKey(ticket); // Get the filter key based on active filters
+      if (!groupByCounts[filterKey]) {
+        groupByCounts[filterKey] = {
+          key: filterKey,
+          count: 0
+        };
+      }
+      groupByCounts[filterKey].count += 1;
+    });
+  
+    return Object.values(groupByCounts);
+  };
+
+  
+  const getGroupKey = (ticket) => {
+    if (engineer.length > 0 && !engineer.includes('')) {
+      return ticket.engineer; // Group by engineer
+    } else if (location.length > 0 && !location.includes('')) {
+      return ticket.company_branch; // Group by location
+    } else if (priority.length > 0 && !priority.includes('')) {
+      return ticket.priority; // Group by priority
+    } else if (completedStatus.length > 0) {
+      const statuses = [];
+      if (completedStatus.includes('Completed')) statuses.push('Completed');
+      if (completedStatus.includes('Not Completed')) statuses.push('Not Completed');
+      if (completedStatus.includes('Paused')) statuses.push('Paused');
+      return statuses.join(', '); // Group by completed status
+    }
+    return 'All'; // Default grouping
+  };
+
+  
+  
 
   const downloadCSV = () => {
-    const headers = ['Ticket Number', 'Company Branch', 'Description', 'Serial Number', 'Priority', 'Engineer', 'Paused', 'Completed', 'Created At'];
+    const headers = groupBy
+      ? ['Filter', 'Count']
+      : ['Ticket Number', 'Company Branch', 'Description', 'Serial Number', 'Priority', 'Engineer', 'Paused', 'Completed', 'Created At'];
 
-    const rows = data.map(ticket => [
-      ticket.ticket_number,
-      ticket.company_branch,
-      ticket.description,
-      ticket.serial_number,
-      ticket.priority,
-      ticket.engineer,
-      ticket.paused ? 'Yes' : 'No',
-      ticket.completed ? 'Yes' : 'No',
-      new Date(ticket.created_at).toLocaleDateString(),
-    ]);
+    const rows = data.map(ticket => groupBy
+      ? [ticket.key, ticket.count]
+      : [
+        ticket.ticket_number,
+        ticket.company_branch,
+        ticket.description,
+        ticket.serial_number,
+        ticket.priority,
+        ticket.engineer,
+        ticket.paused ? 'Yes' : 'No',
+        ticket.completed ? 'Yes' : 'No',
+        new Date(ticket.created_at).toLocaleDateString(),
+      ]
+    );
 
     const csvContent = [headers, ...rows].map(e => e.join(',')).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -187,51 +242,73 @@ const CallReports = () => {
               placeholder="Select Priority"
             />
           </div>
+          <div className="form-group-reports">
+            <label>Group By:</label>
+            <input
+              type="checkbox"
+              checked={groupBy}
+              onChange={() => setGroupBy(!groupBy)}
+            />
+          </div>
         </div>
-
-        <button onClick={downloadCSV} className="download-icon-btn-reports">
-          <FaDownload />
+        <button onClick={downloadCSV} className="download-button">
+          <FaDownload /> 
         </button>
       </div>
-
-      <div className="table-container-reports">
-        <table className="table-reports">
-          <thead>
-            <tr>
-              <th>Ticket Number</th>
-              <th>Company Branch</th>
-              <th>Description</th>
-              <th>Serial Number</th>
-              <th>Priority</th>
-              <th>Engineer</th>
-              <th>Paused</th>
-              <th>Completed</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.length > 0 ? (
-              data.map(ticket => (
-                <tr key={ticket.id}>
-                  <td>{ticket.ticket_number}</td>
-                  <td>{ticket.company_branch}</td>
-                  <td>{ticket.description}</td>
-                  <td>{ticket.serial_number}</td>
-                  <td>{ticket.priority}</td>
-                  <td>{ticket.engineer}</td>
-                  <td>{ticket.paused ? 'Yes' : 'No'}</td>
-                  <td>{ticket.completed ? 'Yes' : 'No'}</td>
-                  <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
-                </tr>
-              ))
+      <table className="reports-table">
+        <thead>
+          <tr>
+            {groupBy ? (
+              <>
+                <th>Filter</th>
+                <th>Count</th>
+              </>
             ) : (
-              <tr>
-                <td colSpan="9">No data available</td>
-              </tr>
+              <>
+                <th>Ticket Number</th>
+                <th>Company Branch</th>
+                <th>Description</th>
+                <th>Serial Number</th>
+                <th>Priority</th>
+                <th>Engineer</th>
+                <th>Paused</th>
+                <th>Completed</th>
+                <th>Created At</th>
+              </>
             )}
-          </tbody>
-        </table>
-      </div>
+          </tr>
+        </thead>
+        <tbody>
+          {data.length > 0 ? (
+            data.map((ticket, index) => (
+              <tr key={index}>
+                {groupBy ? (
+                  <>
+                    <td>{ticket.key}</td>
+                    <td>{ticket.count}</td>
+                  </>
+                ) : (
+                  <>
+                    <td>{ticket.ticket_number}</td>
+                    <td>{ticket.company_branch}</td>
+                    <td>{ticket.description}</td>
+                    <td>{ticket.serial_number}</td>
+                    <td>{ticket.priority}</td>
+                    <td>{ticket.engineer}</td>
+                    <td>{ticket.paused ? 'Yes' : 'No'}</td>
+                    <td>{ticket.completed ? 'Yes' : 'No'}</td>
+                    <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
+                  </>
+                )}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={groupBy ? 2 : 9}>No data available</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };

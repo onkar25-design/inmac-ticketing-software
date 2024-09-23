@@ -110,6 +110,27 @@
   .footer-link:hover {
     text-decoration: underline;
   }
+
+  .download-guide {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .download-button {
+    background-color: #1aba52;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    float: right; /* Aligns the button to the right */
+    margin-right: 10px;
+    margin-bottom: 15px; /* Optional: Adds some spacing from the right edge */
+  }
+  .download-button:hover {
+    background-color: #048008;
+  }
+  
   
   @media (max-width: 768px) {
    

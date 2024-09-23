@@ -34,10 +34,10 @@ const Navbar = ({ onLogout }) => {
           <button className="dropbtn">Engineers</button>
         </Link>
         <Link to="/call-reports"> 
-          <button className="dropbtn">Reports</button> {/* New link */}
+          <button className="dropbtn">Reports</button> 
         </Link>
         <Link to="/help">
-          <button className="dropbtn">Help</button> {/* New link */}
+          <button className="dropbtn">Help</button> 
         </Link>
       </div>
 

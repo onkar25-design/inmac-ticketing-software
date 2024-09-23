@@ -48,6 +48,7 @@
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  width: 100%; 
 }
 
 .filter-form-reports select,
@@ -55,29 +56,25 @@
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  width: 100%; 
 }
 
-.download-icon-btn-reports {
+.download-button {
   background-color: #2ab92f;
   color: #fff;
   border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border-radius: 5px;
+  padding: 10px 15px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
-  flex-shrink: 0; 
 }
 
-.download-icon-btn-reports:hover {
+.download-button:hover {
   background-color: #105212;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
-.download-icon-btn-reports:active {
+.download-button:active {
   background-color: #004494;
 }
 
@@ -90,31 +87,35 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.table-reports {
+.reports-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
 }
 
-.table-reports th,
-.table-reports td {
+.reports-table th,
+.reports-table td {
   padding: 12px;
   border: 1px solid #ddd;
   text-align: left;
 }
 
-.table-reports th {
-  background-color: #2ab92f;
-  color: #fff;
+.reports-table th {
+  background-color: #2ab92f; 
+  color: #fff; 
+  font-weight: bold;
 }
 
-.table-reports tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.table-reports tr:hover {
+.reports-table tr:nth-child(even) {
   background-color: #f1f1f1;
 }
+
+.reports-table tr {
+  transition: background-color 0.3s; 
+}
+
+
+
 
 
 @media (max-width: 768px) {
@@ -147,7 +148,7 @@
     width: 100%;
   }
 
-  .download-icon-btn-reports {
+  .download-button {
     align-self: flex-start;
     margin-top: 10px;
   }
@@ -156,25 +157,15 @@
     padding: 10px;
   }
 
-  .table-reports {
-    font-size: 12px;
+  .reports-table {
+    font-size: 12px; 
   }
 
-  .table-reports th,
-  .table-reports td {
-    padding: 8px;
-  }
-
-  .pagination-reports {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .pagination-link-reports {
-    margin: 5px 0;
+  .reports-table th,
+  .reports-table td {
+    padding: 8px; 
   }
 }
-
 @media (max-width: 480px) {
   .filters-and-download-reports {
     flex-direction: column;
@@ -206,7 +197,7 @@
     width: 100%; 
   }
 
-  .download-icon-btn-reports {
+  .download-button {
     align-self: center; 
     margin-top: 10px; 
   }
@@ -215,23 +206,13 @@
     padding: 10px;
   }
 
-  .table-reports {
-    font-size: 12px; 
+  .reports-table {
+    font-size: 11px; 
   }
 
-  .table-reports th,
-  .table-reports td {
-    padding: 8px;
-  }
-
-  .pagination-reports {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .pagination-link-reports {
-    margin: 5px 0; 
+  .reports-table th,
+  .reports-table td {
+    padding: 6px; 
   }
 }
-
 
