@@ -24,7 +24,7 @@
   gap: 20px;
   align-items: center;
   flex: 1;
-  max-width: calc(100% - 60px); 
+  max-width: calc(100% - 60px);
 }
 
 .form-group-reports {
@@ -59,7 +59,7 @@
   width: 100%; 
 }
 
-.download-button-callreports{
+.download-button-callreports {
   background-color: #2ab92f;
   color: #fff;
   border: none;
@@ -78,17 +78,17 @@
   background-color: #004494;
 }
 
-.table-container-reports {
+.table-scroll-container {
   margin-top: 20px;
   overflow-x: auto;
   background-color: #fff;
-  padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .reports-table {
-  width: 100%;
+  min-width: 600px; /* Ensure table width triggers scroll */
+  width: 100%; /* Use full width */
   border-collapse: collapse;
   font-size: 14px;
 }
@@ -114,10 +114,7 @@
   transition: background-color 0.3s; 
 }
 
-
-
-
-
+/* Responsive Styles */
 @media (max-width: 768px) {
   .filters-and-download-reports {
     flex-direction: column;
@@ -139,23 +136,14 @@
     gap: 10px;
   }
 
-  .date-range-reports input {
-    width: 100%;
-  }
-
-  .filter-form-reports select,
-  .filter-form-reports .react-select__control {
-    width: 100%;
-  }
-
   .download-button-callreports {
     align-self: flex-start;
     margin-top: 10px;
-    
   }
 
-  .table-container-reports {
+  .table-scroll-container {
     padding: 10px;
+    min-width: 500px; 
   }
 
   .reports-table {
@@ -189,31 +177,26 @@
     gap: 5px;
   }
 
-  .date-range-reports input {
-    width: 100%; 
-  }
-
-  .filter-form-reports select,
-  .filter-form-reports .react-select__control {
-    width: 100%; 
-  }
-
   .download-button-callreports {
     align-self: center; 
     margin-top: 10px; 
   }
 
-  .table-container-reports {
+  .table-scroll-container {
     padding: 10px;
+    width: 100%; 
+    overflow-x: auto; 
   }
 
   .reports-table {
     font-size: 11px; 
+    min-width: 300px; 
   }
 
   .reports-table th,
   .reports-table td {
     padding: 6px; 
+    white-space: nowrap; 
   }
 }
 
