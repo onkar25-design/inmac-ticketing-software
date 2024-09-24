@@ -428,3 +428,36 @@ body {
     font-size: 12px;
   }
 }
+
+/* Add styles for react-select */
+.css-2b097c-container {
+  width: 100%;
+}
+
+.css-yk16xz-control {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.css-1pahdxg-control {
+  border-color: #ddd;
+  box-shadow: none;
+}
+
+.css-1okebmr-indicatorSeparator {
+  display: none;
+}
+
+.css-1hb7zxy-IndicatorsContainer {
+  display: flex;
+  align-items: center;
+}
+
+.css-1uccc91-singleValue {
+  color: #333;
+}
+
+.css-1wa3eu0-placeholder {
+  color: #aaa;
+}

@@ -14,6 +14,7 @@ const Support = () => {
   const [deletedTickets, setDeletedTickets] = useState(new Set());
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   useEffect(() => {
     const savedDeletedTickets = JSON.parse(localStorage.getItem('deletedTickets')) || [];
@@ -44,16 +45,20 @@ const Support = () => {
       label: `${ticket.engineer} - ${ticket.ticket_number}`,
     }));
 
-  const handleSearchChange = (selectedOption) => {
-    if (selectedOption) {
-      const selectedTicket = tickets.find(ticket => ticket.id === selectedOption.value);
-      setSearchTerm(selectedTicket ? selectedTicket.ticket_number : '');
-      setFilteredSuggestions([selectedTicket]);
+  const handleSearchChange = (selectedOptions) => {
+    setSelectedOptions(selectedOptions);
+    if (selectedOptions && selectedOptions.length > 0) {
+      const selectedTickets = tickets.filter(ticket => 
+        selectedOptions.some(option => option.value === ticket.id)
+      );
+      setFilteredSuggestions(selectedTickets);
+    } else {
+      setFilteredSuggestions([]);
     }
   };
 
   const clearSearch = () => {
-    setSearchTerm('');
+    setSelectedOptions([]);
     setFilteredSuggestions([]);
   };
 
@@ -110,8 +115,12 @@ const Support = () => {
 
   const filteredTickets = tickets.filter(ticket => 
     !deletedTickets.has(ticket.id) && (
-      ticket.engineer?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      ticket.ticket_number?.toLowerCase().includes(searchTerm.toLowerCase())
+      selectedOptions.length === 0 ||
+      selectedOptions.some(option => 
+        option.value === ticket.id ||
+        ticket.engineer?.toLowerCase().includes(option.label.toLowerCase()) || 
+        ticket.ticket_number?.toLowerCase().includes(option.label.toLowerCase())
+      )
     )
   );
 
@@ -126,12 +135,13 @@ const Support = () => {
           <Select
             options={ticketOptions}
             onChange={handleSearchChange}
-            value={searchTerm ? ticketOptions.find(option => option.label.includes(searchTerm)) : null}
+            value={selectedOptions}
             placeholder="Search by engineer or ticket number..."
             isClearable 
             isSearchable
-            onInputChange={(value) => setSearchTerm(value)}
-            onBlur={() => setFilteredSuggestions([])}
+            isMulti
+            onInputChange={(value) => {}}
+            onBlur={() => {}}
           />
         </div>
         <div className="badge">{unreadTickets.length} Open Support Tickets</div>

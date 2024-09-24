@@ -9,6 +9,7 @@ import { supabase } from '../../supabaseClient';
 import './UpdateEngineerForm.css';
 import TicketForm from '../forms/TicketForm';
 import UpdateTicketForm from '../forms/UpdateTicketForm';
+import Select from 'react-select'; // Import react-select
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
@@ -21,7 +22,6 @@ const ContactPage = () => {
   const [selectedEngineer, setSelectedEngineer] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
   const [noResults, setNoResults] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [tickets, setTickets] = useState([]);
   const [showAddTicketModal, setShowAddTicketModal] = useState(false);
@@ -45,27 +45,19 @@ const ContactPage = () => {
   };
 
   const fetchInitialEngineer = useCallback(async () => {
-    setLoading(true);
-    setError(null);
     const { data, error } = await supabase.from('engineers').select('*').limit(1);
 
     if (error) {
       setError('Error fetching initial engineer.');
       console.error('Error fetching initial engineer:', error);
     } else {
-      data.forEach(engineer => {
-        engineer.name = capitalizeFirstLetter(engineer.name);
-      });
       setInitialEngineer(data[0]);
       setEngineers(data);
       setSelectedEngineer(data[0]); 
     }
-    setLoading(false);
   }, []);
 
   const fetchTickets = useCallback(async (engineerName) => {
-    setLoading(true);
-    setError(null);
     const { data, error } = await supabase
       .from('ticket_main')
       .select('*')
@@ -77,12 +69,9 @@ const ContactPage = () => {
     } else {
       setTickets(data);
     }
-    setLoading(false);
   }, []);
 
   const fetchFilteredEngineers = useCallback(async (query) => {
-    setLoading(true);
-    setError(null);
     const { data, error } = await supabase
       .from('engineers')
       .select('*')
@@ -92,9 +81,6 @@ const ContactPage = () => {
       setError('Error fetching filtered engineers.');
       console.error('Error fetching filtered engineers:', error);
     } else {
-      data.forEach(engineer => {
-        engineer.name = capitalizeFirstLetter(engineer.name);
-      });
       if (data.length === 0) {
         setNoResults(true);
         setEngineers([]);
@@ -105,30 +91,19 @@ const ContactPage = () => {
       }
       setSuggestions(data);
     }
-    setLoading(false);
   }, []);
 
   const fetchSuggestions = useCallback(async (query) => {
-    if (query) {
-      setLoading(true);
-      setError(null);
-      const { data, error } = await supabase
-        .from('engineers')
-        .select('*')
-        .or(`name.ilike.%${query}%,phone_number.ilike.%${query}%,email.ilike.%${query}%`);
+    const { data, error } = await supabase
+      .from('engineers')
+      .select('*')
+      .or(`name.ilike.%${query}%,phone_number.ilike.%${query}%,email.ilike.%${query}%`);
 
-      if (error) {
-        setError('Error fetching suggestions.');
-        console.error('Error fetching suggestions:', error);
-      } else {
-        data.forEach(engineer => {
-          engineer.name = capitalizeFirstLetter(engineer.name);
-        });
-        setSuggestions(data);
-      }
-      setLoading(false);
+    if (error) {
+      setError('Error fetching suggestions.');
+      console.error('Error fetching suggestions:', error);
     } else {
-      setSuggestions([]);
+      setSuggestions(data);
     }
   }, []);
 
@@ -142,23 +117,19 @@ const ContactPage = () => {
 
   const handleCloseUpdateModal = () => setShowUpdateModal(false);
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-    fetchSuggestions(e.target.value);
+  const handleSearchChange = (selectedOption) => {
+    setSearchQuery(selectedOption ? selectedOption.value : '');
+    fetchFilteredEngineers(selectedOption ? selectedOption.value : '');
+  };
+
+  const handleInputChange = (inputValue) => {
+    fetchSuggestions(inputValue);
   };
 
   const handleSearchKeyDown = (e) => {
     if (e.key === 'Enter') {
       fetchFilteredEngineers(searchQuery);
     }
-  };
-
-  const handleSuggestionClick = (suggestion) => {
-    setSearchQuery(suggestion.name);
-    setEngineers([suggestion]);
-    setSuggestions([]);
-    setNoResults(false);
-    setSelectedEngineer(suggestion); 
   };
 
   const handleClearSearch = () => {
@@ -219,16 +190,17 @@ const ContactPage = () => {
     },
   };
 
-  const capitalizeFirstLetter = (name) => {
-    if (!name) return '';
-    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-  };
-
   const getInitial = (name) => {
     if (!name) return '';
     const [firstName] = name.split(' ');
     return firstName.charAt(0).toUpperCase();
   };
+
+  const suggestionOptions = suggestions.map(suggestion => ({
+    value: suggestion.name,
+    label: suggestion.name
+  }));
+
 
   return (
     <div className="contact-page">
@@ -262,9 +234,7 @@ const ContactPage = () => {
                 <button className="edit-ticket-btn" onClick={handleUpdateTicket}>Update Ticket</button>
               </div>
             </div>
-            {loading ? (
-              <div className="loading-spinner">Loading...</div>
-            ) : error ? (
+            {error ? (
               <p className="error-message">{error}</p>
             ) : (
               <div className="table-wrapper">
@@ -313,39 +283,22 @@ const ContactPage = () => {
       <div className="right-side">
         <div className="right-search-bar">
           <div className="search-container">
-            <input
-              
-
+            <Select
               className="search-bar"
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
+              options={suggestionOptions}
               onChange={handleSearchChange}
+              onInputChange={handleInputChange}
               onKeyDown={handleSearchKeyDown}
+              isClearable
+              placeholder="Search..."
             />
-            {searchQuery && (
-              <button className="clear-search-btn" onClick={handleClearSearch}>
-                X
-              </button>
-            )}
           </div>
-          {suggestions.length > 0 && (
-            <ul className="suggestions-list">
-              {suggestions.map((suggestion, index) => (
-                <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
-                  {suggestion.name}
-                </li>
-              ))}
-            </ul>
-          )}
           {noResults && <p className="no-results-message">No such engineer found.</p>}
         </div>
 
         <div className="contact-info-box">
           <h3>Engineer Information</h3>
-          {loading ? (
-            <div className="loading-spinner">Loading...</div>
-          ) : error ? (
+          {error ? (
             <p className="error-message">{error}</p>
           ) : displayedEngineer ? (
             <>

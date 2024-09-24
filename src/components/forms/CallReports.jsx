@@ -3,6 +3,7 @@ import { supabase } from '../../supabaseClient';
 import Select from 'react-select';
 import './CallReports.css';
 import { FaDownload } from 'react-icons/fa';
+import Switch from 'react-switch';
 
 const CallReports = () => {
   const [startDate, setStartDate] = useState('');
@@ -12,7 +13,7 @@ const CallReports = () => {
   const [location, setLocation] = useState([]);
   const [priority, setPriority] = useState([]);
   const [data, setData] = useState([]);
-  const [groupBy, setGroupBy] = useState(false); 
+  const [groupBy, setGroupBy] = useState(false);
   const [engineers, setEngineers] = useState([]);
   const [locations, setLocations] = useState([]);
   const [priorities, setPriorities] = useState([]);
@@ -180,12 +181,12 @@ const CallReports = () => {
   };
 
   return (
-    <div className="call-reports-container">
-      <div className="filters-and-download-reports">
-        <div className="filter-form-reports">
-          <div className="form-group-reports">
+    <div className="callreports-container">
+      <div className="callreports-filters-and-download">
+        <form className="callreports-filter-form">
+          <div className="callreports-form-group">
             <label>Date Range:</label>
-            <div className="date-range-reports">
+            <div className="callreports-date-range">
               <input
                 type="date"
                 value={startDate}
@@ -198,7 +199,7 @@ const CallReports = () => {
               />
             </div>
           </div>
-          <div className="form-group-reports">
+          <div className="callreports-form-group">
             <label>Completed Status:</label>
             <Select
               options={[
@@ -212,7 +213,7 @@ const CallReports = () => {
               placeholder="Select Status"
             />
           </div>
-          <div className="form-group-reports">
+          <div className="callreports-form-group">
             <label>Engineer:</label>
             <Select
               options={engineers}
@@ -222,7 +223,7 @@ const CallReports = () => {
               placeholder="Select Engineer"
             />
           </div>
-          <div className="form-group-reports">
+          <div className="callreports-form-group">
             <label>Location:</label>
             <Select
               options={locations}
@@ -232,7 +233,7 @@ const CallReports = () => {
               placeholder="Select Location"
             />
           </div>
-          <div className="form-group-reports">
+          <div className="callreports-form-group">
             <label>Priority:</label>
             <Select
               options={priorities}
@@ -242,21 +243,25 @@ const CallReports = () => {
               placeholder="Select Priority"
             />
           </div>
-          <div className="form-group-reports">
+          <div className="callreports-form-group callreports-toggle-group">
             <label>Group By:</label>
-            <input
-              type="checkbox"
-              checked={groupBy}
+            <Switch
               onChange={() => setGroupBy(!groupBy)}
+              checked={groupBy}
+              onColor="#2ab92f"
+              offColor="#888888"
+              height={24}
+              width={48}
+              className="callreports-react-switch"
             />
           </div>
-        </div>
-        <button className="download-button-callreports" onClick={downloadCSV}>
+        </form>
+        <button className="callreports-download-button" onClick={downloadCSV}>
           <FaDownload /> 
         </button>
       </div>
-      <div className="table-scroll-container">
-        <table className="reports-table">
+      <div className="callreports-table-scroll-container">
+        <table className="callreports-table">
           <thead>
             <tr>
               {groupBy ? (
