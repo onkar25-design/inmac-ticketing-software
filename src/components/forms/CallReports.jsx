@@ -152,7 +152,7 @@ const CallReports = () => {
   const downloadCSV = () => {
     const headers = groupBy
       ? ['Filter', 'Count']
-      : ['Ticket Number', 'Company Branch', 'Description', 'Serial Number', 'Priority', 'Engineer', 'Paused', 'Completed', 'Created At'];
+      : ['Ticket Number', 'Company Branch', 'Description', 'Serial Number', 'Priority', 'Engineer', 'Paused', 'Completed', 'Created At', 'Completed At'];
 
     const rows = data.map(ticket => groupBy
       ? [ticket.key, ticket.count]
@@ -166,6 +166,7 @@ const CallReports = () => {
         ticket.paused ? 'Yes' : 'No',
         ticket.completed ? 'Yes' : 'No',
         new Date(ticket.created_at).toLocaleDateString(),
+        ticket.completed_at ? new Date(ticket.completed_at).toLocaleDateString() : 'N/A',
       ]
     );
 
@@ -280,6 +281,7 @@ const CallReports = () => {
                   <th>Paused</th>
                   <th>Completed</th>
                   <th>Created At</th>
+                  <th>Completed At</th>
                 </>
               )}
             </tr>
@@ -304,13 +306,14 @@ const CallReports = () => {
                       <td>{ticket.paused ? 'Yes' : 'No'}</td>
                       <td>{ticket.completed ? 'Yes' : 'No'}</td>
                       <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
+                      <td>{ticket.completed_at ? new Date(ticket.completed_at).toLocaleDateString() : 'N/A'}</td>
                     </>
                   )}
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={groupBy ? 2 : 9}>No data available</td>
+                <td colSpan={groupBy ? 2 : 10}>No data available</td>
               </tr>
             )}
           </tbody>

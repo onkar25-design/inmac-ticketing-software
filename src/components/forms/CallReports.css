@@ -67,6 +67,7 @@
   padding: 10px 15px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
+  margin-top: 20px;
 }
 
 .callreports-download-button:hover {
@@ -182,10 +183,11 @@
     flex-direction: column;
     align-items: stretch; 
     padding: 10px; 
+    width: 100%; /* Ensure the container takes full width */
   }
 
   .callreports-filter-form {
-    width: 100%; 
+    width: 100%; /* Ensure the form takes full width */
   }
 
   .callreports-form-group {
@@ -205,14 +207,18 @@
   }
 
   .callreports-table-scroll-container {
-    padding: 10px;
-    width: 100%; 
+    padding: 0; /* Remove padding to avoid overflow */
+    width: 100%; /* Ensure the container takes full width */
     overflow-x: auto; 
+  }
+
+  .callreports-table-wrapper {
+    width: 100%; /* Ensure the wrapper takes full width */
   }
 
   .callreports-table {
     font-size: 11px; 
-    min-width: 300px; 
+    width: 100%; /* Ensure the table takes full width */
   }
 
   .callreports-table th,

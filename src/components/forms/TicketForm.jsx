@@ -77,7 +77,7 @@ const TicketForm = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Insert ticket data
+    // Insert ticket data without completed_at field
     const { data, error } = await supabase
       .from('ticket_main')
       .insert([
@@ -88,6 +88,7 @@ const TicketForm = () => {
           priority,
           engineer: engineer?.value,
           ticket_number: ticketNumber,
+          // No completed_at field here
         }
       ]);
 

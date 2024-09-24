@@ -86,6 +86,13 @@ const UpdateTicketForm = () => {
     setImageFiles((prevFiles) => prevFiles.filter(file => file.name !== fileName));  // Remove specific image file
   };
 
+  // Function to convert UTC date to IST
+  function convertUTCToIST(dateUTC) {
+    // Create a new date object from the UTC date
+    const dateIST = new Date(dateUTC.getTime() + (5.5 * 60 * 60 * 1000));
+    return dateIST;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -122,9 +129,11 @@ const UpdateTicketForm = () => {
       }
     }
   
-    
     const combinedImageUrls = [...updateData.image_urls, ...urls];
     const imageUrlsString = combinedImageUrls.join(',');
+  
+    // Conditionally set completed_at to IST if completed is true
+    const completedAtIST = updateData.completed ? convertUTCToIST(new Date()).toISOString() : null;
   
     const dataToUpdate = {
       company_branch: updateData.company_branch,
@@ -134,7 +143,8 @@ const UpdateTicketForm = () => {
       engineer: updateData.engineer || null,
       paused: updateData.paused,
       completed: updateData.completed,
-      callreports: imageUrlsString, 
+      callreports: imageUrlsString,
+      completed_at: completedAtIST, // Conditionally use IST timestamp
     };
   
     try {
@@ -153,6 +163,17 @@ const UpdateTicketForm = () => {
         variant: 'success',
       });
       setImageFiles([]);
+      setSelectedTicket(null); // Reset selected ticket after update
+      setUpdateData({
+        company_branch: '',
+        description: '',
+        serial_number: '',
+        priority: 'Low',
+        engineer: '',
+        paused: false,
+        completed: false,
+        image_urls: [],
+      });
     } catch (error) {
       setAlert({
         show: true,
@@ -184,7 +205,7 @@ const UpdateTicketForm = () => {
     });
   };
 
-   const handleDeleteTicket = async () => {
+  const handleDeleteTicket = async () => {
     if (!selectedTicket) return;
     setIsLoading(true);
 
@@ -226,7 +247,11 @@ const UpdateTicketForm = () => {
 
     setIsLoading(false);
   };
-  
+
+  const handleToggleCompleted = () => {
+    const newCompletedState = !updateData.completed;
+    setUpdateData({ ...updateData, completed: newCompletedState });
+  };
 
   return (
     <div className="update-ticket-form">
@@ -302,12 +327,11 @@ const UpdateTicketForm = () => {
               <Form.Label className="updateform-headings">Completed</Form.Label>
               <div
                 className={`toggle-switch ${updateData.completed ? 'active' : ''}`}
-                onClick={() => setUpdateData({ ...updateData, completed: !updateData.completed })}
+                onClick={handleToggleCompleted}
               >
                 <div className="slider"></div>
               </div>
             </Form.Group>
-
 
             <Form.Group className="mb-3" controlId="engineer">
               <Form.Label className="updateform-headings">Engineer</Form.Label>
