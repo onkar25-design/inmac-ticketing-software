@@ -6,6 +6,7 @@ import './SupportPage.css';
 import { supabase } from '../../supabaseClient';
 import EngineerModal from '../forms/AddEngineerModal';
 import UpdateTicket from './UpdateTicket'; 
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const Support = () => {
   const [tickets, setTickets] = useState([]);
@@ -127,6 +128,12 @@ const Support = () => {
   const unreadTickets = filteredTickets.filter(ticket => !ticket.isRead);
   const readTickets = filteredTickets.filter(ticket => ticket.isRead);
 
+  const renderTooltip = (text) => (
+    <Tooltip id={`tooltip-${text.replace(/\s+/g, '-').toLowerCase()}`}>
+      {text}
+    </Tooltip>
+  );
+
   return (
     <div className="container my-4 support-page-ticketsupport">
       <header className="d-flex justify-content-between align-items-center mb-4 support-header-ticketsupport">
@@ -174,25 +181,40 @@ const Support = () => {
                 <p className="card-text"><strong>Priority:</strong> {ticket.note_priority}</p>
                 <div className="d-flex justify-content-between ticket-actions-ticketsupport">
                   <div className="d-flex">
-                    <button 
-                      className="btn btn-sm btn-primary me-2" 
-                      onClick={() => markAsRead(ticket.id)}
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={renderTooltip("Mark as Read")}
                     >
-                      <FaEnvelopeOpen /> 
-                    </button>
-                    <button 
-                      className="btn btn-sm btn-warning me-2" 
-                      onClick={() => handleEdit(ticket.id)}
+                      <button 
+                        className="btn btn-sm btn-primary me-2" 
+                        onClick={() => markAsRead(ticket.id)}
+                      >
+                        <FaEnvelopeOpen /> 
+                      </button>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={renderTooltip("Edit Ticket")}
                     >
-                      <FaEdit /> 
-                    </button>
+                      <button 
+                        className="btn btn-sm btn-warning me-2" 
+                        onClick={() => handleEdit(ticket.id)}
+                      >
+                        <FaEdit /> 
+                      </button>
+                    </OverlayTrigger>
                   </div>
-                  <button 
-                    className="btn btn-sm btn-danger delete-ticket-ticketsupport" 
-                    onClick={() => deleteNote(ticket.id, ticket.isRead)}
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={renderTooltip("Delete Ticket")}
                   >
-                    <FaTrash />
-                  </button>
+                    <button 
+                      className="btn btn-sm btn-danger delete-ticket-ticketsupport" 
+                      onClick={() => deleteNote(ticket.id, ticket.isRead)}
+                    >
+                      <FaTrash />
+                    </button>
+                  </OverlayTrigger>
                 </div>
               </div>
             </div>
@@ -228,18 +250,28 @@ const Support = () => {
                   <td>{ticket.ticket_number}</td>
                   <td>
                     <div className="ticket-actions-container-ticketsupport">
-                      <button 
-                        className="btn btn-sm btn-secondary me-2" 
-                        onClick={() => markAsUnread(ticket.id)}
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={renderTooltip("Mark as Unread")}
                       >
-                        <FaEnvelope /> 
-                      </button>
-                      <button 
-                        className="btn btn-sm btn-danger delete-ticket-ticketsupport" 
-                        onClick={() => deleteNote(ticket.id, ticket.isRead)}
+                        <button 
+                          className="btn btn-sm btn-secondary me-2" 
+                          onClick={() => markAsUnread(ticket.id)}
+                        >
+                          <FaEnvelope /> 
+                        </button>
+                      </OverlayTrigger>
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={renderTooltip("Delete Ticket")}
                       >
-                        <FaTrash />
-                      </button>
+                        <button 
+                          className="btn btn-sm btn-danger delete-ticket-ticketsupport" 
+                          onClick={() => deleteNote(ticket.id, ticket.isRead)}
+                        >
+                          <FaTrash />
+                        </button>
+                      </OverlayTrigger>
                     </div>
                   </td>
                 </tr>

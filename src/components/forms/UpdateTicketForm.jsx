@@ -253,11 +253,19 @@ const UpdateTicketForm = () => {
     setUpdateData({ ...updateData, completed: newCompletedState });
   };
 
+  const dismissAlert = () => {
+    setAlert({ show: false, message: '', variant: '' });
+  };
+
   return (
     <div className="update-ticket-form">
       <img src={companyLogo} alt="Company Logo" className="company-logo-UpdateTicketForm" />
       <h2>Update Ticket</h2>
-      {alert.show && <Alert variant={alert.variant}>{alert.message}</Alert>}
+      {alert.show && (
+        <Alert variant={alert.variant} onClose={dismissAlert} dismissible>
+          {alert.message}
+        </Alert>
+      )}
       <Form onSubmit={handleSubmit}>
         <Form.Group  className="mb-3" controlId="ticketSelect">
           <Form.Label className="updateform-headings">Select Ticket</Form.Label>

@@ -4,6 +4,7 @@ import Select from 'react-select';
 import './CallReports.css';
 import { FaDownload } from 'react-icons/fa';
 import Switch from 'react-switch';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const CallReports = () => {
   const [startDate, setStartDate] = useState('');
@@ -181,6 +182,12 @@ const CallReports = () => {
     document.body.removeChild(link);
   };
 
+  const renderTooltip = (text) => (
+    <Tooltip id={`tooltip-${text.replace(/\s+/g, '-').toLowerCase()}`}>
+      {text}
+    </Tooltip>
+  );
+
   return (
     <div className="callreports-container">
       <div className="callreports-filters-and-download">
@@ -257,9 +264,14 @@ const CallReports = () => {
             />
           </div>
         </form>
-        <button className="callreports-download-button" onClick={downloadCSV}>
-          <FaDownload /> 
-        </button>
+        <OverlayTrigger
+          placement="top"
+          overlay={renderTooltip("Download CSV")}
+        >
+          <button className="callreports-download-button" onClick={downloadCSV}>
+            <FaDownload /> 
+          </button>
+        </OverlayTrigger>
       </div>
       <div className="callreports-table-container">
         <div className="callreports-table-scroll-container">

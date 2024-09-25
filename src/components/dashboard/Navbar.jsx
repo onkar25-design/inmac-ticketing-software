@@ -42,13 +42,11 @@ const Navbar = ({ onLogout }) => {
       </div>
 
       <div className={`navbar-profile ${isMenuOpen ? 'show' : ''}`}>
-        <div className="dropdown">
-          <button className="dropbtn">Profile</button>
-          <div className="dropdown-content">
+          <div className="dropbtn">
             <button onClick={onLogout}>Logout</button> 
           </div>
-        </div>
       </div>
+     
     </nav>
   );
 };

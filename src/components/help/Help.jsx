@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronDownIcon, ChevronUpIcon, HelpCircleIcon, DownloadIcon } from 'lucide-react';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './Help.css'; 
 
 const FAQItem = ({ question, answer }) => {
@@ -82,6 +83,12 @@ const faqData = [
   }
 ];
 
+const renderTooltip = (text) => (
+  <Tooltip id={`tooltip-${text.replace(/\s+/g, '-').toLowerCase()}`}>
+    {text}
+  </Tooltip>
+);
+
 export default function Help() {
   return (
     <div className="help-page">
@@ -94,14 +101,18 @@ export default function Help() {
       </header>
 
       <h2 className="faq-title">Frequently Asked Questions</h2>
-      <a 
+      <OverlayTrigger
+        placement="top"
+        overlay={renderTooltip("Download guide")}
+      >
+        <a 
           href="/NXT%20Gen%20ticketing%20software%20guide.pdf" 
           className="download-button" 
           download
-          title="Download guide" 
         >
           <DownloadIcon className="icon" />
         </a>
+      </OverlayTrigger>
       <div className="faq-list">
         {faqData.map((faq, index) => (
           <FAQItem key={index} question={faq.question} answer={faq.answer} />

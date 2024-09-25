@@ -9,6 +9,12 @@ const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 };
 
+const capitalizeWords = (string) => {
+  return string.split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 const UpdateLocationForm = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -43,7 +49,7 @@ const UpdateLocationForm = () => {
         companyName: capitalizeFirstLetter(selectedOption.company_name || ''),
         branchLocation: capitalizeFirstLetter(selectedOption.branch_location || ''),
         city: capitalizeFirstLetter(selectedOption.city || ''),
-        contactPersonName: capitalizeFirstLetter(selectedOption.contact_person_name || ''),
+        contactPersonName: capitalizeWords(selectedOption.contact_person_name || ''),
         contactNumber: selectedOption.contact_number || '',
         pincode: selectedOption.pincode || '',
         emailId: selectedOption.email_id || '',
@@ -65,9 +71,13 @@ const UpdateLocationForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const formattedValue = name === 'branchLocation' || name === 'city' || name === 'contactPersonName'
-      ? capitalizeFirstLetter(value)
-      : value;
+    let formattedValue = value;
+
+    if (name === 'branchLocation' || name === 'city') {
+      formattedValue = capitalizeFirstLetter(value);
+    } else if (name === 'contactPersonName') {
+      formattedValue = capitalizeWords(value);
+    }
 
     setFormData({
       ...formData,
