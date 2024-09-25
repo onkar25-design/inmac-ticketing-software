@@ -11,10 +11,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Add class to body when component mounts
     document.body.classList.add('login-page');
-
-    // Remove class from body when component unmounts
     return () => {
       document.body.classList.remove('login-page');
     };
@@ -23,71 +20,32 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    console.log('Login attempt for email:', email);
 
     try {
-      // Query the allowed_users table
       const { data: allowedUser, error: allowedUserError } = await supabase
         .from('allowed_users')
         .select()
         .eq('email', email)
         .single();
 
-      if (allowedUserError) {
-        console.error('Error querying allowed_users:', allowedUserError);
-        throw allowedUserError;
-      }
-
-      console.log('Allowed user data:', allowedUser);
-
-      if (allowedUser && allowedUser.password === password) {
-        console.log('Email and password match in allowed_users');
-        
-        // Attempt to sign in
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: email,
-          password: password,
-        });
-
-        if (error) {
-          console.error('Sign in error:', error);
-          if (error.message === 'Invalid login credentials') {
-            console.log('User not found in Supabase auth, attempting to create');
-            // User doesn't exist in Supabase auth, so create them
-            const { data: newUser, error: signUpError } = await supabase.auth.signUp({
-              email: email,
-              password: password,
-            });
-
-            if (signUpError) {
-              console.error('Sign up error:', signUpError);
-              throw signUpError;
-            }
-
-            console.log('New user created:', newUser);
-
-            // Check if email confirmation is required
-            if (newUser.user && newUser.user.confirmation_sent_at) {
-              setError('Please check your email to confirm your account before logging in.');
-              return;
-            }
-          } else {
-            throw error;
-          }
-        } else {
-          console.log('User signed in successfully:', data);
-        }
-
-        // If we've reached here, the user is either signed in or newly created
-        console.log('Navigating to dashboard');
-        navigate('/dashboard');
-      } else {
-        console.log('Invalid email or password in allowed_users table');
+      if (allowedUserError || !allowedUser || allowedUser.password !== password) {
         setError('Invalid email or password');
+        return;
       }
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (signInError) {
+        setError('Invalid email or password');
+        return;
+      }
+
+      navigate('/dashboard');
     } catch (error) {
-      console.error('Caught error:', error);
-      setError(error.message);
+      setError('Invalid email or password');
     }
   };
 
