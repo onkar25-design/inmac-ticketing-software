@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { supabase } from './supabaseClient';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './components/dashboard/Navbar';
 import Dashboard from './components/dashboard/Dashboard';
@@ -13,54 +14,104 @@ import CallReports from './components/forms/CallReports';
 import LoginPage from './LoginPage'; 
 import Help from './components/help/Help';
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const PrivateRoute = ({ children }) => {
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-   
-    const loggedInStatus = localStorage.getItem('isLoggedIn');
-    if (loggedInStatus === 'true') {
-      setIsLoggedIn(true);
-    }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const handleLogin = (password) => {
-    const correctPassword = import.meta.env.VITE_PASSWORD;
-    if (password === correctPassword) {
-      setIsLoggedIn(true);
-      localStorage.setItem('isLoggedIn', 'true'); 
-    } else {
-      alert('Invalid password');
-    }
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem('isLoggedIn'); 
+  if (!session) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
+function App() {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
   };
 
   return (
     <Router>
-      {isLoggedIn ? (
-        <>
-          <Navbar onLogout={handleLogout} /> 
-          <div className="main-container">
-            <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" />} />
-              <Route path="/dashboard" element={<><Dashboard /><Chart /></>} />
-              <Route path="/ticket-form" element={<TicketForm />} /> 
-              <Route path="/engineer-form" element={<EngineerForm />} /> 
-              <Route path="/location-form" element={<LocationForm />} />
-              <Route path="/contacts" element={<ContactPage />} /> 
-              <Route path="/support-page" element={<SupportPage />} />
-              <Route path="/call-reports" element={<CallReports />} /> 
-              <Route path="/help" element={<Help />} /> 
-            </Routes>
-          </div>
-        </>
-      ) : (
-        <LoginPage onLogin={handleLogin} />
-      )}
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={
+          <PrivateRoute>
+            <Navbar onLogout={handleLogout} />
+            <div className="main-container">
+              <Dashboard />
+              <Chart />
+            </div>
+          </PrivateRoute>
+        } />
+        <Route path="/dashboard" element={
+          <PrivateRoute>
+            <Navbar onLogout={handleLogout} />
+            <div className="main-container">
+              <Dashboard />
+              <Chart />
+            </div>
+          </PrivateRoute>
+        } />
+        <Route path="/ticket-form" element={
+          <PrivateRoute>
+            <Navbar onLogout={handleLogout} />
+            <TicketForm />
+          </PrivateRoute>
+        } />
+        <Route path="/engineer-form" element={
+          <PrivateRoute>
+            <Navbar onLogout={handleLogout} />
+            <EngineerForm />
+          </PrivateRoute>
+        } />
+        <Route path="/location-form" element={
+          <PrivateRoute>
+            <Navbar onLogout={handleLogout} />
+            <LocationForm />
+          </PrivateRoute>
+        } />
+        <Route path="/contacts" element={
+          <PrivateRoute>
+            <Navbar onLogout={handleLogout} />
+            <ContactPage />
+          </PrivateRoute>
+        } />
+        <Route path="/support-page" element={
+          <PrivateRoute>
+            <Navbar onLogout={handleLogout} />
+            <SupportPage />
+          </PrivateRoute>
+        } />
+        <Route path="/call-reports" element={
+          <PrivateRoute>
+            <Navbar onLogout={handleLogout} />
+            <CallReports />
+          </PrivateRoute>
+        } />
+        <Route path="/help" element={
+          <PrivateRoute>
+            <Navbar onLogout={handleLogout} />
+            <Help />
+          </PrivateRoute>
+        } />
+      </Routes>
     </Router>
   );
 }
