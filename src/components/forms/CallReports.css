@@ -1,4 +1,6 @@
 .callreports-container {
+  display: flex;
+  flex-direction: column;
   padding: 20px;
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;
@@ -9,7 +11,7 @@
 .callreports-filters-and-download {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 20px;
   background-color: #fff;
   padding: 20px;
@@ -21,8 +23,7 @@
 .callreports-filter-form {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
+  gap: 10px;
   flex: 1;
   max-width: calc(100% - 60px);
 }
@@ -31,7 +32,8 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
-  flex: 1;
+  flex: 1 1 calc(33.333% - 10px);
+  min-width: 200px;
 }
 
 .callreports-form-group label {
@@ -68,6 +70,8 @@
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
   margin-top: 20px;
+  align-self: flex-start;
+  margin-left: 20px;
 }
 
 .callreports-download-button:hover {
@@ -85,6 +89,7 @@
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Ensure it takes full width of its container */
 }
 
 .callreports-table {
@@ -133,6 +138,7 @@
 /* Responsive Styles */
 @media (max-width: 768px) {
   .callreports-filters-and-download {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
   }
@@ -153,13 +159,15 @@
   }
 
   .callreports-download-button {
-    align-self: flex-start;
+    align-self: flex-end;
+    margin-left: 0;
     margin-top: 10px;
   }
 
   .callreports-table-scroll-container {
-    padding: 10px;
-    min-width: 500px; 
+    margin-top: 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .callreports-table {
@@ -169,6 +177,7 @@
   .callreports-table th,
   .callreports-table td {
     padding: 8px; 
+    white-space: nowrap;
   }
 
   .callreports-form-group.toggle-group {
@@ -176,10 +185,24 @@
     align-items: center;
     justify-content: space-between;
   }
+
+  .callreports-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .callreports-filters-and-download {
+    width: 100%;
+  }
+
+  .callreports-table-container {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
   .callreports-filters-and-download {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
   }
@@ -205,30 +228,47 @@
   }
 
   .callreports-table-scroll-container {
-    padding: 0; /* Remove padding to avoid overflow */
-    width: 100%; /* Ensure the container takes full width */
-    overflow-x: auto; 
-  }
-
-  .callreports-table-wrapper {
-    width: 100%; /* Ensure the wrapper takes full width */
+    margin-top: 15px;
+    padding: 0;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .callreports-table {
-    font-size: 11px; 
-    width: 100%; /* Ensure the table takes full width */
+    font-size: 11px;
+    width: 100%;
+    table-layout: auto;
+    white-space: nowrap;
   }
 
   .callreports-table th,
   .callreports-table td {
-    padding: 6px; 
-    white-space: nowrap; 
+    padding: 6px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 120px; /* Adjust this value as needed */
   }
 
-  .callreports-form-group.toggle-group {
-    flex-direction: column; /* Ensure the toggle group is in a column */
-    align-items: flex-start; /* Align items to the start */
-    margin-top: 20px; /* Add some margin to the top */
+  .callreports-table th {
+    position: sticky;
+    left: 0;
+    background-color: #2ab92f;
+    z-index: 1;
+  }
+
+  /* Add horizontal scrolling indicator */
+  .callreports-table-scroll-container::after {
+    content: '⟷ Scroll horizontally';
+    display: block;
+    text-align: center;
+    padding: 5px;
+    background-color: #f1f1f1;
+    font-size: 12px;
+    color: #666;
+    position: sticky;
+    left: 0;
+    width: 100%;
   }
 }
 

@@ -261,63 +261,65 @@ const CallReports = () => {
           <FaDownload /> 
         </button>
       </div>
-      <div className="callreports-table-scroll-container">
-        <table className="callreports-table">
-          <thead>
-            <tr>
-              {groupBy ? (
-                <>
-                  <th>Filter</th>
-                  <th>Count</th>
-                </>
-              ) : (
-                <>
-                  <th>Ticket Number</th>
-                  <th>Company Branch</th>
-                  <th>Description</th>
-                  <th>Serial Number</th>
-                  <th>Priority</th>
-                  <th>Engineer</th>
-                  <th>Paused</th>
-                  <th>Completed</th>
-                  <th>Created At</th>
-                  <th>Completed At</th>
-                </>
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {data.length > 0 ? (
-              data.map((ticket, index) => (
-                <tr key={index}>
-                  {groupBy ? (
-                    <>
-                      <td>{ticket.key}</td>
-                      <td>{ticket.count}</td>
-                    </>
-                  ) : (
-                    <>
-                      <td>{ticket.ticket_number}</td>
-                      <td>{ticket.company_branch}</td>
-                      <td>{ticket.description}</td>
-                      <td>{ticket.serial_number}</td>
-                      <td>{ticket.priority}</td>
-                      <td>{ticket.engineer}</td>
-                      <td>{ticket.paused ? 'Yes' : 'No'}</td>
-                      <td>{ticket.completed ? 'Yes' : 'No'}</td>
-                      <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
-                      <td>{ticket.completed_at ? new Date(ticket.completed_at).toLocaleDateString() : 'N/A'}</td>
-                    </>
-                  )}
-                </tr>
-              ))
-            ) : (
+      <div className="callreports-table-container">
+        <div className="callreports-table-scroll-container">
+          <table className="callreports-table">
+            <thead>
               <tr>
-                <td colSpan={groupBy ? 2 : 10}>No data available</td>
+                {groupBy ? (
+                  <>
+                    <th>Filter</th>
+                    <th>Count</th>
+                  </>
+                ) : (
+                  <>
+                    <th>Ticket Number</th>
+                    <th>Company Branch</th>
+                    <th>Description</th>
+                    <th>Serial Number</th>
+                    <th>Priority</th>
+                    <th>Engineer</th>
+                    <th>Paused</th>
+                    <th>Completed</th>
+                    <th>Created At</th>
+                    <th>Completed At</th>
+                  </>
+                )}
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.length > 0 ? (
+                data.map((ticket, index) => (
+                  <tr key={index}>
+                    {groupBy ? (
+                      <>
+                        <td>{ticket.key}</td>
+                        <td>{ticket.count}</td>
+                      </>
+                    ) : (
+                      <>
+                        <td>{ticket.ticket_number}</td>
+                        <td>{ticket.company_branch}</td>
+                        <td>{ticket.description}</td>
+                        <td>{ticket.serial_number}</td>
+                        <td>{ticket.priority}</td>
+                        <td>{ticket.engineer}</td>
+                        <td>{ticket.paused ? 'Yes' : 'No'}</td>
+                        <td>{ticket.completed ? 'Yes' : 'No'}</td>
+                        <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
+                        <td>{ticket.completed_at ? new Date(ticket.completed_at).toLocaleDateString() : 'N/A'}</td>
+                      </>
+                    )}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={groupBy ? 2 : 10}>No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
